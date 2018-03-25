@@ -245,8 +245,8 @@ school or district (as mandated by NCLB) but rather difficult to access
 across schools or districts. Further, the utility of these data for
 research purposes is not particularly straightforward. While raw
 percentages scoring within specific PLCs can be compared between schools
-or between student subgroups, rthese differences are highly dependent
-upon the placement of the cut scores (Ho, 2008, Holland (2002)).
+or between student subgroups, these differences are highly dependent
+upon the placement of the cut scores (Ho, 2008; Holland, 2002).
 
 Ideally, a transformation could be applied to the \enquote{coarsened}
 data (continuous test score distributions binned into a set of ordinal
@@ -285,7 +285,7 @@ meta-analytic review of the relation between socioeconomic status (SES)
 and academic achievement. The author found that, while there was a
 medium to strong overall relation, the magnitude was dependent upon
 (among other factors) the physical location of the school. This is
-perhaps unsurprising , given that schools draw students from the
+perhaps unsurprising, given that schools draw students from the
 surrounding neighborhoods, and any disparities between neighborhoods
 would naturally flow into disparities between schools. When evaluating
 achievement gaps, it makes sense to consider characteristics of both the
@@ -296,7 +296,7 @@ Black in a school with students predominately identifying as White is
 very different from identifying as Black in a school where students
 predominately identify as Black (Hanushek, Kain, \& Rivkin, 2009).
 
-In addition to school compositional effects, there is a considerable
+In addition to school compositional effects, there is considerable
 evidence that crime rates in the surrounding area relate to student
 achievement (e.g., Gonzales, Cauce, Friedman, \& Mason, 1996; McCoy,
 Roy, \& Sirkman, 2013). In particular, N. K. Bowen and Bowen (1999)
@@ -358,13 +358,13 @@ corresponded with \(V\) estimated from the full, continuous data
 Publicly-available datasets were used to visualize differences in
 achievement gaps in both Oregon and California. For both states, data on
 the proportion of students in each subgroup scoring in each PLC were
-obtained from the corresponding statewide websites (Oregon Department of
-Education, 2017a; Studnet Performance \& Progress, 2017). Both states
-had minimum reporting requirements, although the threshold varied
-considerably. In California, the minimum reported sample size across
-student groups was 100, while in Oregon the minimum sample size was only
-6. Values below these thresholds in each respective data file were
-missing.
+obtained from the corresponding statewide websites (California
+Assessment of Student Performance and Progress, 2017; Oregon Department
+of Education, 2017a). Both states had minimum reporting requirements,
+although the threshold varied considerably. In California, the minimum
+reported sample size across student groups was 100, while in Oregon the
+minimum sample size was only 6. Values below these thresholds in each
+respective data file were missing.
 
 To map the schools, information on the physical location of the schools,
 in terms of latitude and longitude, were also necessary. For California,
@@ -375,6 +375,34 @@ schools could be located. However, a file containing the school name and
 physical address was located (Oregon Department of Education, 2017b).
 These addresses were then transformed to latitude and longitude using
 Google's geocode application programming interface (API; Google, 2018)
+
+\begin{table}[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:descrips}}
+\begin{tabular}{lllll}
+\toprule
+Content Area & \multicolumn{1}{c}{ethniccd} & \multicolumn{1}{c}{n} & \multicolumn{1}{c}{mean} & \multicolumn{1}{c}{sd}\\
+\midrule
+Mathematics & Am. Indian & 6341 & 217.81 & 21.67\\
+Mathematics & Asian & 13986 & 229.35 & 21.79\\
+Mathematics & Black & 9689 & 215.26 & 21.87\\
+Mathematics & Hispanic & 91967 & 217.60 & 19.61\\
+Mathematics & Multiethnic & 19646 & 222.63 & 20.39\\
+Mathematics & Pac Islander & 2760 & 218.01 & 19.99\\
+Mathematics & White & 234136 & 223.74 & 19.64\\
+Reading/Language Arts & Am. Indian & 6006 & 217.47 & 21.47\\
+Reading/Language Arts & Asian & 13941 & 225.01 & 19.27\\
+Reading/Language Arts & Black & 9237 & 216.00 & 21.07\\
+Reading/Language Arts & Hispanic & 89071 & 216.40 & 19.44\\
+Reading/Language Arts & Multiethnic & 18649 & 222.51 & 19.68\\
+Reading/Language Arts & Pac Islander & 2706 & 217.23 & 19.35\\
+Reading/Language Arts & White & 220974 & 223.48 & 19.26\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table}
 
 \hypertarget{analyses}{%
 \subsection{Analyses}\label{analyses}}
@@ -408,8 +436,8 @@ students identifying as Hispanic/Latino, and \(ref\) represents the
 reference group (students identifying as White). The numerator
 represents the difference in the means of the two distributions, while
 the denominator represents the pooled standard deviation. The \(V_c\)
-statistic was then estimated with the same data, and for the same set of
-schools. Comparisons between \(V_c\) and \(D\) were assessed both in
+effect size was then estimated with the same data, and for the same set
+of schools. Comparisons between \(V_c\) and \(D\) were assessed both in
 terms of the correlation between the measures, as well as in terms of
 how discrepant \(V_c\) was from \(D\).
 
@@ -421,33 +449,46 @@ to differ marginally, given the different assumptions of the estimators.
 However, any differences in \(V_c\) and \(V_d\) could be interpreted as
 differences that arose due to the coarsening of the data.
 
-\begin{table}[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:descrips}}
-\begin{tabular}{lllll}
-\toprule
-Content Area & \multicolumn{1}{c}{ethniccd} & \multicolumn{1}{c}{n} & \multicolumn{1}{c}{mean} & \multicolumn{1}{c}{sd}\\
-\midrule
-Mathematics & Am. Indian & 6341 & 217.81 & 21.67\\
-Mathematics & Asian & 13986 & 229.35 & 21.79\\
-Mathematics & Black & 9689 & 215.26 & 21.87\\
-Mathematics & Hispanic & 91967 & 217.60 & 19.61\\
-Mathematics & Multiethnic & 19646 & 222.63 & 20.39\\
-Mathematics & Pac Islander & 2760 & 218.01 & 19.99\\
-Mathematics & White & 234136 & 223.74 & 19.64\\
-Reading/Language Arts & Am. Indian & 6006 & 217.47 & 21.47\\
-Reading/Language Arts & Asian & 13941 & 225.01 & 19.27\\
-Reading/Language Arts & Black & 9237 & 216.00 & 21.07\\
-Reading/Language Arts & Hispanic & 89071 & 216.40 & 19.44\\
-Reading/Language Arts & Multiethnic & 18649 & 222.51 & 19.68\\
-Reading/Language Arts & Pac Islander & 2706 & 217.23 & 19.35\\
-Reading/Language Arts & White & 220974 & 223.48 & 19.26\\
-\bottomrule
-\end{tabular}
-\end{threeparttable}
-\end{center}
-\end{table}
+\hypertarget{mapping-school-estimates}{%
+\subsubsection{Mapping school
+estimates}\label{mapping-school-estimates}}
+
+Publicly available data reporting on the percentage of students scoring
+in each PLC were obtain for California and Oregon, as described
+previously. Both files reported percentages by grade and across grades,
+by student subgroups. Similar to the student-level analyses, we used the
+pooled percentages across grades, rather than conducting separate
+analyses by grade. The Black-White achievement gap was estimated for
+California, while the Hispanic-White achievement gap was estimated for
+Oregon. In both cases, schools were only included if they reported
+percentages for both groups (i.e., met the minimal reporting threshold).
+
+State level evaluations were followed up with county-level
+investigations using geographic and census data. Specifically, we
+obtained data on (a) the number of individuals identifying as Black (for
+California) or Hispanic/Latino (for Oregon), (b) the median housing
+cost, and (c) the number of individuals living at or below the poverty
+line within each county's census tracts, obtained from the 5-year
+American Community Survey (ACS) - data collected as part of the
+nationwide census (United States Census Bureau, 2016). Census tracts
+represent geographic areas with between approximately 1,200 to 8,000
+people, with an optimum size of 4,000 people. Geographic boundaries of
+the census tracts were also obtained from the ACS survey. Maps were then
+produced with the census tracts, colored according to the respective
+variable, with schools displayed as \enquote{pins} on the map. Schools
+were colored according to the magnitude of the estimated achievement
+gap, and the relation between achievement gaps at the school level and
+demographic characteristics of the surrounding area were visually
+examined. All maps were interactive, helping to facilitate exploration
+(e.g., zoom, pan, identify schools by click). In our results, we share
+screen captures from these maps, although it is recognized that some of
+the features are difficult to portray through static images.
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+\hypertarget{effect-size-comparisons}{%
+\subsection{Effect Size Comparisons}\label{effect-size-comparisons}}
 
 \begin{figure}
 \centering
@@ -455,6 +496,13 @@ Reading/Language Arts & White & 220974 & 223.48 & 19.26\\
 \caption{\label{fig:unnamed-chunk-1}Differences in Cohen's D and V estimated
 with continuous data}
 \end{figure}
+
+Figure 1 displays the relation between \(V_c\) and \(D\) both in terms
+of the bivariate relation and the distribution of differences with
+respect to \(V\). The vertical line on the histogram indicates the mean
+of the differences. Note that it was slightly negative (\(M =\) -0.12),
+indicating that, on average for this sample, \(V\) represented a
+slightly lower estimate of the effect size.
 
 \newpage
 
@@ -473,6 +521,12 @@ Bowen, N. K., \& Bowen, G. L. (1999). Effects of crime and violence in
 neighborhoods and schools on the school behavior and performance of
 adolescents. \emph{Journal of Adolescent Research}, \emph{14}(3),
 319--342.
+
+\leavevmode\hypertarget{ref-ca17a}{}%
+California Assessment of Student Performance and Progress. (2017).
+\emph{Test results for english language arts/literacy and mathematics}.
+Retrieved March 24, 2018, from
+\url{https://caaspp.cde.ca.gov/sb2017/ResearchFileList}
 
 \leavevmode\hypertarget{ref-ca17b}{}%
 California Department of Education. (2017). \emph{Public schools and
@@ -589,10 +643,10 @@ Sirin, S. R. (2005). Socioeconomic status and academic achievement: A
 meta-analytic review of research. \emph{Review of Educational Research},
 \emph{75}(3), 417--453.
 
-\leavevmode\hypertarget{ref-ca17a}{}%
-Studnet Performance, C. A. of, \& Progress. (2017). \emph{Test results
-for english language arts/literacy and mathematics}. Retrieved March 24,
-2018, from \url{https://caaspp.cde.ca.gov/sb2017/ResearchFileList}
+\leavevmode\hypertarget{ref-acs}{}%
+United States Census Bureau. (2016). \emph{American community survey}.
+Retrieved March 24, 2018, from
+\url{https://www.census.gov/programs-surveys/acs/}
 
 \leavevmode\hypertarget{ref-tidycensus}{}%
 Walker, K. (2018). \emph{Tidycensus: Load us census boundary and
