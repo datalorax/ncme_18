@@ -1,0 +1,10 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{anderson_ncme18_files/figure-latex/unnamed-chunk-1-1.pdf}
+\caption{\label{fig:unnamed-chunk-1}Differences in Cohen's D and V estimated
+with continuous data}
+\end{figure*}
+\efloatseparator
+ 

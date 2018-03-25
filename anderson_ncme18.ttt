@@ -1,0 +1,31 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:descrips}}
+\begin{tabular}{lllll}
+\toprule
+Content Area & \multicolumn{1}{c}{ethniccd} & \multicolumn{1}{c}{n} & \multicolumn{1}{c}{mean} & \multicolumn{1}{c}{sd}\\
+\midrule
+Mathematics & Am. Indian & 6341 & 217.81 & 21.67\\
+Mathematics & Asian & 13986 & 229.35 & 21.79\\
+Mathematics & Black & 9689 & 215.26 & 21.87\\
+Mathematics & Hispanic & 91967 & 217.60 & 19.61\\
+Mathematics & Multiethnic & 19646 & 222.63 & 20.39\\
+Mathematics & Pac Islander & 2760 & 218.01 & 19.99\\
+Mathematics & White & 234136 & 223.74 & 19.64\\
+Reading/Language Arts & Am. Indian & 6006 & 217.47 & 21.47\\
+Reading/Language Arts & Asian & 13941 & 225.01 & 19.27\\
+Reading/Language Arts & Black & 9237 & 216.00 & 21.07\\
+Reading/Language Arts & Hispanic & 89071 & 216.40 & 19.44\\
+Reading/Language Arts & Multiethnic & 18649 & 222.51 & 19.68\\
+Reading/Language Arts & Pac Islander & 2706 & 217.23 & 19.35\\
+Reading/Language Arts & White & 220974 & 223.48 & 19.26\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table*}
+\efloatseparator
+ 
