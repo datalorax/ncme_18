@@ -17,10 +17,29 @@ affiliation:
 
 
 author_note: |
-  The research reported here was supported by the Institute of Education Sciences, U.S. Department of Education, through Grant R324C110004, awarded to the University of Oregon. The opinions expressed are those of the authors and do not represent views of the Institute or the U.S. Department of Education. 
+  The research reported here was supported by the Institute of Education
+    Sciences, U.S. Department of Education, through Grant R324C110004, awarded
+    to the University of Oregon. The opinions expressed are those of the
+    authors and do not represent views of the Institute or the U.S. Department
+    of Education.
 
 abstract: |
-  Recent years have seen a push for more open data as a means of facilitating transparency and opening doors for further research. Since the implementation of the No Child Left Behind Act, schools and districts across the country have been required to publicly report the number of students scoring in each performance level classification on the statewide test, disaggregated by student subgroups (e.g., gender, race/ethnicity). These data represent a "coarsening" of the underlying continuous data by binning the distributions into categories. The purpose of this paper is to evaluate the extent to which achievement gap estimates from student-level data align with those estimates from coarsened data, using the approach suggested by @ho12. Following the evaluation, we use this approach to visualize differences in school-level achievement gaps using publicly-available data, and visualize these estimates through geo-spatial mapping. We overlay demographic data as a means to visually evaluate the extent to which demographics of the surrounding area correspond to school-level achievement gaps.
+  Recent years have seen a push for more open data as a means of facilitating
+    transparency and opening doors for further research. Since the
+    implementation of the No Child Left Behind Act, schools and districts
+    across the country have been required to publicly report the number of
+    students scoring in each performance level classification on the statewide
+    test, disaggregated by student subgroups (e.g., gender, race/ethnicity).
+    These data represent a "coarsening" of the underlying continuous data by
+    binning the distributions into categories. The purpose of this paper is to
+    evaluate the extent to which achievement gap estimates from student-level
+    data align with those estimates from coarsened data, using the approach
+    suggested by @ho12. Following the evaluation, we use this approach to
+    visualize differences in school-level achievement gaps using publicly-
+    available data, and visualize these estimates through geo-spatial mapping.
+    We overlay demographic data as a means to visually evaluate the extent to
+    which demographics of the surrounding area correspond to school-level
+    achievement gaps.
   
 keywords          : "Effect Size, Achievement Gaps, Visualization, Maps"
 wordcount         : "X"
@@ -47,50 +66,206 @@ knitr::opts_chunk$set(echo    = FALSE,
                       results = "asis")
 ```
 
-Recent years have seen increased attention on open data (i.e., free and publicly available) as one component of open science [e.g., see @dawes16; @sieber15; @zuiderwijk14]. The National Institute of Health (NIH), for example, recently made 64 data sharing repositories publicly available [@nih_16]. The National Science Foundation (NSF) has placed a similarly high emphasis on making data from funded projects publicly available, as part of their Open Government Plan [@nsf16]. The Institute of Education Sciences (IES) has similarly moved towards greater requirements for data sharing, with Goal 4 Effectiveness grants requiring a data sharing component since 2013, and Goal 3 Efficacy and Replication awards requiring data sharing since 2016 [@ies16]. Despite these movements, data that are fully open remain rare, particularly in educational research. For example, the website data.gov represents the "home of the U.S. Government's open data", housing nearly a quarter of a million datasets. Of these datasets, only 365 were tagged with the keyword "Education" (as of this writing), and the vast majority of these receive an openness score of one star out of a possible five.
+Recent years have seen increased attention on open data (i.e., free and
+publicly available) as one component of open science [e.g., see @dawes16;
+@sieber15; @zuiderwijk14]. The National Institute of Health (NIH), for example,
+recently made 64 data sharing repositories publicly available [@nih_16]. The
+National Science Foundation (NSF) has placed a similarly high emphasis on
+making data from funded projects publicly available, as part of their Open
+Government Plan [@nsf16]. The Institute of Education Sciences (IES) has
+similarly moved towards greater requirements for data sharing, with Goal 4
+Effectiveness grants requiring a data sharing component since 2013, and Goal 3
+Efficacy and Replication awards requiring data sharing since 2016 [@ies16].
+Despite these movements, data that are fully open remain rare, particularly in
+educational research. For example, the website data.gov represents the "home of
+the U.S. Government's open data", housing nearly a quarter of a million
+datasets. Of these datasets, only 365 were tagged with the keyword "Education"
+(as of this writing), and the vast majority of these receive an openness score
+of one star out of a possible five.
 
-Privacy issues abound in educational research, given that the research population generally includes minors. Privacy concerns may therefore explain part of the lack of data sharing (although it should be noted that health care and medical research often face similar privacy concerns). One method of avoiding potential issues of confidentiality is to first aggregate the data in some capacity, before releasing the data publicly. This was the approach taken by the *No Child Left Behind Act* [@nclb02], with data reported at the overall school and district levels, but not at the individual student level. NCLB required annual testing in reading and mathematics in each of grades 3-8, and once in high school, with the results reported at the aggregate levels by student subgroups (e.g., gender, race/ethnicity). Cut scores were required to be established, delineating students into various performance level classifications (PLCs). The state of California, for example, included the following four categories in order of increasing competency: "Not Met", "Nearly Met", "Met", and "Exceeds". The proportion of students scoring in each of these categories, by subgroup, were also required to be reported at each of the school and district levels by NCLB, provided a sufficient number of students were represented within each subgroup such that individual students could not be identified. 
+Privacy issues abound in educational research, given that the research
+population generally includes minors. Privacy concerns may therefore explain
+part of the lack of data sharing (although it should be noted that health care
+and medical research often face similar privacy concerns). One method of
+avoiding potential issues of confidentiality is to first aggregate the data in
+some capacity, before releasing the data publicly. This was the approach taken
+by the *No Child Left Behind Act* [@nclb02], with data reported at the overall
+school and district levels, but not at the individual student level. NCLB
+required annual testing in reading and mathematics in each of grades 3-8, and
+once in high school, with the results reported at the aggregate levels by
+student subgroups (e.g., gender, race/ethnicity). Cut scores were required to
+be established, delineating students into various performance level
+classifications (PLCs). The state of California, for example, included the
+following four categories in order of increasing competency: "Not Met", "Nearly
+Met", "Met", and "Exceeds". The proportion of students scoring in each of these
+categories, by subgroup, were also required to be reported at each of the
+school and district levels by NCLB, provided a sufficient number of students
+were represented within each subgroup such that individual students could not
+be identified.
 
 ## Evaluating Achievement Gaps With Open Data 
-Aggregating the data to higher levels, combined with reporting test score data by PLC proportions, helps avoid privacy concerns and allows the data to be reported publicly. Despite mandates from NCLB on public reporting, however, the openness of these data vary by state, in terms of accessing the data for research purposes. Some (e.g., Oregon, California) make the process easy, with downloadable comma separated value (CSV) including the proportion of students scoring in each PLC for all schools and/or districts in the state, by student subgroups. Other states make it relatively easy to access the data for an individual school or district (as mandated by NCLB) but rather difficult to access across schools or districts. Further, the utility of these data for research purposes is not particularly straightforward. While raw percentages scoring within specific PLCs can be compared between schools or between student subgroups, rthese differences are highly dependent upon the placement of the cut scores [@ho08, @holland02]. 
+Aggregating the data to higher levels, combined with reporting test score data
+by PLC proportions, helps avoid privacy concerns and allows the data to be
+reported publicly. Despite mandates from NCLB on public reporting, however, the
+openness of these data vary by state, in terms of accessing the data for
+research purposes. Some (e.g., Oregon, California) make the process easy, with
+downloadable comma separated value (CSV) including the proportion of students
+scoring in each PLC for all schools and/or districts in the state, by student
+subgroups. Other states make it relatively easy to access the data for an
+individual school or district (as mandated by NCLB) but rather difficult to
+access across schools or districts. Further, the utility of these data for
+research purposes is not particularly straightforward. While raw percentages
+scoring within specific PLCs can be compared between schools or between student
+subgroups, rthese differences are highly dependent upon the placement of the
+cut scores [@ho08, @holland02].
 
-Ideally, a transformation could be applied to the "coarsened" data [continuous test score distributions binned into a set of ordinal categories; @reardon15] to recover the parameters of the full distribution for each subgroup, making the placement of the cut scores inconsequential to evaluating subgroup differences. @ho12 and @reardon15 propose such an approach, in which the coarsened data are used to construct empirical cumulative distribution functions (ECDFs) for each group. Paired ECDFs for any two groups are then evaluated in the form of a probability-probability (PP) plot, and the area under the PP curve (AUC) provides an estimate of the probability that a randomly selected students from the reference distribution (plotted along the x-axis) would score higher than a randomly selected student from the focal distribution [plotted along the y-axis; see @ho12]. This proportion can then be transformed into standard-deviation units, using the following formula, as outlined by @ho09
+Ideally, a transformation could be applied to the "coarsened" data [continuous
+test score distributions binned into a set of ordinal categories; @reardon15]
+to recover the parameters of the full distribution for each subgroup, making
+the placement of the cut scores inconsequential to evaluating subgroup
+differences. @ho12 and @reardon15 propose such an approach, in which the
+coarsened data are used to construct empirical cumulative distribution
+functions (ECDFs) for each group. Paired ECDFs for any two groups are then
+evaluated in the form of a probability-probability (PP) plot, and the area
+under the PP curve (AUC) provides an estimate of the probability that a
+randomly selected students from the reference distribution (plotted along the
+x-axis) would score higher than a randomly selected student from the focal
+distribution [plotted along the y-axis; see @ho12]. This proportion can then be
+transformed into standard-deviation units, using the following formula, as
+outlined by @ho09
 \begin{equation}
 V = \sqrt(2)\Phi^{-1}(AUC)
 \end{equation}
-Where $\Phi^{-1}$ represents the inverse normal distribution. Under the assumption of respective normality, $V$ is equivalent to Cohen's $D$, and the dependence upon cut scores is removed, given that it is an estimate of difference between the paired distributions, rather than the difference between proportions at any particular point on the distribution. Importantly, because $V$ can be estimated from coarsened data, it can be used to estimate the overall achievement gap between student subgroups using NCLB mandatorily reported data.
+Where $\Phi^{-1}$ represents the inverse normal distribution. Under the
+assumption of respective normality, $V$ is equivalent to Cohen's $D$, and the
+dependence upon cut scores is removed, given that it is an estimate of
+difference between the paired distributions, rather than the difference between
+proportions at any particular point on the distribution. Importantly, because
+$V$ can be estimated from coarsened data, it can be used to estimate the
+overall achievement gap between student subgroups using NCLB mandatorily
+reported data.
 
 ## Achievement Gaps in Context
-A wealth of previous research has examined achievement differences between student subgroups. @sirin05, for example, conducted a meta-analytic review of the relation between socioeconomic status (SES) and academic achievement. The author found that, while there was a medium to strong overall relation, the magnitude was dependent upon (among other factors) the physical location of the school. This is perhaps unsurprising , given that schools draw students from the surrounding neighborhoods, and any disparities between neighborhoods would naturally flow into disparities between schools. When evaluating achievement gaps, it makes sense to consider characteristics of both the school and the surrounding neighborhood/community. For example, it is possible that the racial/ethnic makeup of the surrounding area would relate to achievement gaps at the school, given that identifying as Black in a school with students predominately identifying as White is very different from identifying as Black in a school where students predominately identify as Black [@hanushek09]. 
+A wealth of previous research has examined achievement differences between
+student subgroups. @sirin05, for example, conducted a meta-analytic review of
+the relation between socioeconomic status (SES) and academic achievement. The
+author found that, while there was a medium to strong overall relation, the
+magnitude was dependent upon (among other factors) the physical location of the
+school. This is perhaps unsurprising , given that schools draw students from
+the surrounding neighborhoods, and any disparities between neighborhoods would
+naturally flow into disparities between schools. When evaluating achievement
+gaps, it makes sense to consider characteristics of both the school and the
+surrounding neighborhood/community. For example, it is possible that the
+racial/ethnic makeup of the surrounding area would relate to achievement gaps
+at the school, given that identifying as Black in a school with students
+predominately identifying as White is very different from identifying as Black
+in a school where students predominately identify as Black [@hanushek09].
 
-In addition to school compositional effects, there is a considerable evidence that crime rates in the surrounding area relate to student achievement [e.g., @gonzales96; @mccoy13]. In particular, @bowen99 found that measures of neighborhood danger were predictive of a number of outcomes, but particularly measures of behavior and attendance. The authors found that males and students identifying as African American reported higher rates of exposure to both neighborhood and school danger. These results are particularly relevant for achievement gaps when considering @lee09 found that "Black students were 2.88 times more likely than White peers to reside in the neighborhoods with high crime-high poverty" (p. 165). Further, as noted by @gregory10, large racial disproportionality exists in terms of school-wide suspension and expulsion rates. This disproportionality may be partially attributable to neighborhood/community differences, which ultimately lead to fewer opportunities for students to learn (i.e., more time spent out of the classroom) and a broadening of the achievement gap.
+In addition to school compositional effects, there is a considerable evidence
+that crime rates in the surrounding area relate to student achievement [e.g.,
+@gonzales96; @mccoy13]. In particular, @bowen99 found that measures of
+neighborhood danger were predictive of a number of outcomes, but particularly
+measures of behavior and attendance. The authors found that males and students
+identifying as African American reported higher rates of exposure to both
+neighborhood and school danger. These results are particularly relevant for
+achievement gaps when considering @lee09 found that "Black students were 2.88
+times more likely than White peers to reside in the neighborhoods with high
+crime-high poverty" (p. 165). Further, as noted by @gregory10, large racial
+disproportionality exists in terms of school-wide suspension and expulsion
+rates. This disproportionality may be partially attributable to
+neighborhood/community differences, which ultimately lead to fewer
+opportunities for students to learn (i.e., more time spent out of the
+classroom) and a broadening of the achievement gap.
 
 ## Summary
-The purpose of this paper is to evaluate differences in achievement gaps between schools using open, publicly available data, reported by schools on a mandatory basis as part of NCLB. We begin, however, by first evaluating $V$ using empirical, student-level data collected across the state of Oregon. Specifically, we evaluate the extent to which $V$ corresponds with $D$ when using the full sample. We expect a strong but imperfect relation, given the differing assumption of the two effect sizes. We then manually coarsen the data into the proportion of students scoring in each PLC, re-estimate $V$, and compare the estimates to those made from the continuous data. Following this investigation, we illustrate how this approach can be useful when working with publicly available data, specifically by using $V$ to calculate achievement gap effect sizes for schools in California and Oregon, combining these data with census data, and producing geo-spatial maps to evaluate both the clustering of school-level estimates of achievement gaps, and the extent to which any clustering relates to the demographics of the surrounding area (e.g., median housing cost).
+The purpose of this paper is to evaluate differences in achievement gaps
+between schools using open, publicly available data, reported by schools on a
+mandatory basis as part of NCLB. We begin, however, by first evaluating $V$
+using empirical, student-level data collected across the state of Oregon.
+Specifically, we evaluate the extent to which $V$ corresponds with $D$ when
+using the full sample. We expect a strong but imperfect relation, given the
+differing assumption of the two effect sizes. We then manually coarsen the data
+into the proportion of students scoring in each PLC, re-estimate $V$, and
+compare the estimates to those made from the continuous data. Following this
+investigation, we illustrate how this approach can be useful when working with
+publicly available data, specifically by using $V$ to calculate achievement gap
+effect sizes for schools in California and Oregon, combining these data with
+census data, and producing geo-spatial maps to evaluate both the clustering of
+school-level estimates of achievement gaps, and the extent to which any
+clustering relates to the demographics of the surrounding area (e.g., median
+housing cost).
 
 # Method
 ## Data Sources
-Multiple sources of data were used. Student-level data included all students in the state of Oregon who took the reading/language arts or mathematics assessments during the 2012-2013 school year. These data are summarized by content area and gender in Table 1, and were collected as part of the National Center on Assessment and Accountability for Special Education (NCAASE; see http://ncaase.com), a multi-state collaborative focused on growth modeling and evaluating school effect policies. These data were used to evaluate the correspondence between $V$ and $D$ estimated from the full data, as well as the extent to which $V$ estimated with the discrete (coarsened) data ($V_{d}$) corresponded with $V$ estimated from the full, continuous data ($V_{c}$)
+Multiple sources of data were used. Student-level data included all students in
+the state of Oregon who took the reading/language arts or mathematics
+assessments during the 2012-2013 school year. These data are summarized by
+content area and gender in Table 1, and were collected as part of the National
+Center on Assessment and Accountability for Special Education (NCAASE; see
+http://ncaase.com), a multi-state collaborative focused on growth modeling and
+evaluating school effect policies. These data were used to evaluate the
+correspondence between $V$ and $D$ estimated from the full data, as well as the
+extent to which $V$ estimated with the discrete (coarsened) data ($V_{d}$)
+corresponded with $V$ estimated from the full, continuous data ($V_{c}$)
 
-Publicly-available datasets were used to visualize differences in achievement gaps in both Oregon and California. For both states, data on the proportion of students in each subgroup scoring in each PLC were obtained from the corresponding statewide websites [@ca17a; @or17a]. Both states had minimum reporting requirements, although the threshold varied considerably. In California, the minimum reported sample size across student groups was 100, while in Oregon the minimum sample size was only 6. Values below these thresholds in each respective data file were missing.
+Publicly-available datasets were used to visualize differences in achievement
+gaps in both Oregon and California. For both states, data on the proportion of
+students in each subgroup scoring in each PLC were obtained from the
+corresponding statewide websites [@ca17a; @or17a]. Both states had minimum
+reporting requirements, although the threshold varied considerably. In
+California, the minimum reported sample size across student groups was 100,
+while in Oregon the minimum sample size was only 6. Values below these
+thresholds in each respective data file were missing.
 
-To map the schools, information on the physical location of the schools, in terms of latitude and longitude, were also necessary. For California, a data file containing this information for all schools in the state was located on the state website [@ca17b]. For Oregon, no specific information on the latitude and longitude of schools could be located. However, a file containing the school name and physical address was located [@or17b]. These addresses were then transformed to latitude and longitude using Google's geocode application programming interface [API; @google] 
+To map the schools, information on the physical location of the schools, in
+terms of latitude and longitude, were also necessary. For California, a data
+file containing this information for all schools in the state was located on
+the state website [@ca17b]. For Oregon, no specific information on the latitude
+and longitude of schools could be located. However, a file containing the
+school name and physical address was located [@or17b]. These addresses were
+then transformed to latitude and longitude using Google's geocode application
+programming interface [API; @google]
 
 ## Analyses
-All analyses were conducted within the R statistical computing framework [@r]. The *tidyverse* suite of packages [@tidyverse] were used for all data preparation and visualization. Effect sizes were estimated using the *esvis* package [@esvis], and maps were produced using a combination of the *leaflet* [@leaflet] and *tidycensus* [@tidycensus] packages. Note that a github repository housing all the code and publicly available data from the project is available[^1].
+All analyses were conducted within the R statistical computing framework [@r].
+The *tidyverse* suite of packages [@tidyverse] were used for all data
+preparation and visualization. Effect sizes were estimated using the *esvis*
+package [@esvis], and maps were produced using a combination of the *leaflet*
+[@leaflet] and *tidycensus* [@tidycensus] packages. Note that a github
+repository housing all the code and publicly available data from the project is
+available[^1].
 
 [^1]: see https://github.com/DJAnderson07/ncme_18
 
 ### Effect size comparison
-Student-level data from Oregon were used to empirically estimate achievement gap effect sizes by school. Across all effect size analyses, we pooled data across grades to estimate a single effect size, rather than estimating separate effects by grade. For the purposes of this investigation, we evaluated achievement gaps between students identifying as Hispanic/Latino and students identifying as White for all schools that met the minimum reporting size for both groups. Cohen's $D$ was estimated as
+Student-level data from Oregon were used to empirically estimate achievement
+gap effect sizes by school. Across all effect size analyses, we pooled data
+across grades to estimate a single effect size, rather than estimating separate
+effects by grade. For the purposes of this investigation, we evaluated
+achievement gaps between students identifying as Hispanic/Latino and students
+identifying as White for all schools that met the minimum reporting size for
+both groups. Cohen's $D$ was estimated as
 \begin{equation}
 d = \frac{\bar{X}_{foc} - \bar{X}_{ref}}
         {\sqrt{\frac{(n_{foc} - 1)\sigma_{foc} + (n_{ref} - 1)\sigma_{ref}}
                   {n_{foc} + n_{ref} - 2}}}
 \end{equation}
-where $foc$ represents the focal group, in this case students identifying as Hispanic/Latino, and $ref$ represents the reference group (students identifying as White). The numerator represents the difference in the means of the two distributions, while the denominator represents the pooled standard deviation. The $V_c$ statistic was then estimated with the same data, and for the same set of schools. Comparisons between $V_c$ and $D$ were assessed both in terms of the correlation between the measures, as well as in terms of how discrepant $V_c$ was from $D$. 
+where $foc$ represents the focal group, in this case students identifying as
+Hispanic/Latino, and $ref$ represents the reference group (students identifying
+as White). The numerator represents the difference in the means of the two
+distributions, while the denominator represents the pooled standard deviation.
+The $V_c$ effect size was then estimated with the same data, and for the same
+set of schools. Comparisons between $V_c$ and $D$ were assessed both in terms
+of the correlation between the measures, as well as in terms of how discrepant
+$V_c$ was from $D$.
 
-Following the evaluation of $V_c$ with $D$, we collapsed the data into counts by PLC within each school - i.e., we manually coarsened the data. We then estimated $V_d$ and compared these estimates with both $V_c$ and $D$. As stated previously, we expected $V_c$ and $D$ to differ marginally, given the different assumptions of the estimators. However, any differences in $V_c$ and $V_d$ could be interpreted as differences that arose due to the coarsening of the data. 
+Following the evaluation of $V_c$ with $D$, we collapsed the data into counts
+by PLC within each school - i.e., we manually coarsened the data. We then
+estimated $V_d$ and compared these estimates with both $V_c$ and $D$. As stated
+previously, we expected $V_c$ and $D$ to differ marginally, given the different
+assumptions of the estimators. However, any differences in $V_c$ and $V_d$
+could be interpreted as differences that arose due to the coarsening of the
+data.
 
 
 
