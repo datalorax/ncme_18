@@ -1,6 +1,8 @@
 # Data files
 data/Student_MA_1314.csv
 data/Student_RL_1314.csv
+data/sb_ca2017_all_csv_v2.txt
+data/sb_ca2017entities_csv.txt
 
 # History files
 .Rhistory
