@@ -92,6 +92,9 @@ where $foc$ represents the focal group, in this case students identifying as His
 
 Following the evaluation of $V_c$ with $D$, we collapsed the data into counts by PLC within each school - i.e., we manually coarsened the data. We then estimated $V_d$ and compared these estimates with both $V_c$ and $D$. As stated previously, we expected $V_c$ and $D$ to differ marginally, given the different assumptions of the estimators. However, any differences in $V_c$ and $V_d$ could be interpreted as differences that arose due to the coarsening of the data. 
 
+### Mapping school estimates
+Publicly available data reporting on the percentage of students scoring in each PLC
+Following the evaluation of $V_d$, we used the procedure to estimate Black-White achievement gaps for all schools in California, using coarsened data reported for the 2016-17 school year in both reading and mathematics. 
 
 
 ```{r descrips}
