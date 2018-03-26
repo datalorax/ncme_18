@@ -150,7 +150,7 @@ estimates from student-level data align with those estimates from
 coarsened data, using the approach suggested by Ho and Reardon (2012).
 Following the evaluation, we use this approach to visualize differences
 in school-level achievement gaps using publicly-available data, and
-visualize these estimates through geo-spatial mapping. We overlay
+visualize these estimates geographically using maps. We overlay
 demographic data as a means to visually evaluate the extent to which
 demographics of the surrounding area correspond to school-level
 achievement gaps.}
@@ -195,16 +195,16 @@ recently made 64 data sharing repositories publicly available (Kittrie
 placed a similarly high emphasis on making data from funded projects
 publicly available, as part of their Open Government Plan (National
 Science Foundation, 2016). The Institute of Education Sciences (IES) has
-similarly moved towards greater requirements for data sharing, with Goal
-4 Effectiveness grants requiring a data sharing component since 2013,
-and Goal 3 Efficacy and Replication awards requiring data sharing since
-2016 (Institute of Education Sciences, 2016). Despite these movements,
-data that are fully open remain rare, particularly in educational
-research. For example, the website data.gov represents the \enquote{home
-of the U.S. Government's open data}, housing nearly a quarter of a
-million datasets. Of these datasets, only 365 were tagged with the
-keyword \enquote{Education} (as of this writing), and the vast majority
-of these receive an openness score of one star out of a possible five.
+also moved towards greater requirements for data sharing, with Goal 4
+Effectiveness grants requiring a data sharing component since 2013, and
+Goal 3 Efficacy and Replication awards requiring data sharing since 2016
+(Institute of Education Sciences, 2016). Despite these movements,
+however, data that are fully open remain rare, particularly in
+educational research. For example, the website data.gov represents the
+\enquote{home of the U.S. Government's open data}, housing nearly a
+quarter of a million datasets. Of these, only 365 were tagged with the
+keyword \enquote{Education} as of this writing, and the vast majority of
+these receive an openness score of one star out of a possible five.
 
 Privacy issues abound in educational research, given that the research
 population generally includes minors. Privacy concerns may therefore
@@ -225,8 +225,8 @@ of increasing competency: \enquote{Not Met}, \enquote{Nearly Met},
 \enquote{Met}, and \enquote{Exceeds}. The proportion of students scoring
 in each of these categories, by subgroup, were also required to be
 reported at each of the school and district levels by NCLB, provided a
-sufficient number of students were represented within each subgroup such
-that individual students could not be identified.
+sufficient number of students were represented within each subgroup,
+such that individual students could not be identified.
 
 \hypertarget{evaluating-achievement-gaps-with-open-data}{%
 \subsection{Evaluating Achievement Gaps With Open
@@ -238,26 +238,27 @@ the data to be reported publicly. Despite mandates from NCLB on public
 reporting, however, the openness of these data vary by state, in terms
 of accessing the data for research purposes. Some (e.g., Oregon,
 California) make the process easy, with downloadable comma separated
-value (CSV) including the proportion of students scoring in each PLC for
-all schools and/or districts in the state, by student subgroups. Other
-states make it relatively easy to access the data for an individual
-school or district (as mandated by NCLB) but rather difficult to access
-across schools or districts. Further, the utility of these data for
-research purposes is not particularly straightforward. While raw
-percentages scoring within specific PLCs can be compared between schools
-or between student subgroups, these differences are highly dependent
-upon the placement of the cut scores (Ho, 2008; Holland, 2002).
+value (CSV) files including the proportion of students scoring in each
+PLC for all schools and/or districts in the state, by student subgroups.
+Other states make it relatively easy to access the data for an
+individual school or district (as mandated by NCLB) but rather difficult
+to access the data across schools or districts. Further, the utility of
+these data for research purposes is not particularly straightforward.
+While raw percentages scoring within specific PLCs can be compared
+between schools or between student subgroups, these differences are
+highly dependent upon the placement of the cut scores (Ho, 2008;
+Holland, 2002).
 
 Ideally, a transformation could be applied to the \enquote{coarsened}
-data (continuous test score distributions binned into a set of ordinal
-categories; Reardon \& Ho, 2015) to recover the parameters of the full
-distribution for each subgroup, making the placement of the cut scores
-inconsequential to evaluating subgroup differences. Ho and Reardon
-(2012) and Reardon and Ho (2015) propose such an approach, in which the
-coarsened data are used to construct empirical cumulative distribution
-functions (ECDFs) for each group. Paired ECDFs for any two groups are
-then evaluated in the form of a probability-probability (PP) plot, and
-the area under the PP curve (AUC) provides an estimate of the
+data (i.e., continuous test score distributions binned into a set of
+ordinal categories; Reardon \& Ho, 2015) to recover the parameters of
+the full distribution for each subgroup, making the placement of the cut
+scores inconsequential to evaluating subgroup differences. Ho and
+Reardon (2012) and Reardon and Ho (2015) propose such an approach, in
+which the coarsened data are used to construct empirical cumulative
+distribution functions (ECDFs) for each group. Paired ECDFs for any two
+groups are then evaluated in the form of a probability-probability (PP)
+plot, and the area under the PP curve (AUC) provides an estimate of the
 probability that a randomly selected students from the reference
 distribution (plotted along the x-axis) would score higher than a
 randomly selected student from the focal distribution (plotted along the
@@ -268,12 +269,12 @@ V = \sqrt(2)\Phi^{-1}(AUC)
 \end{equation} Where \(\Phi^{-1}\) represents the inverse normal
 distribution. Under the assumption of respective normality, \(V\) is
 equivalent to Cohen's \(D\), and the dependence upon cut scores is
-removed, given that it is an estimate of difference between the paired
-distributions, rather than the difference between proportions at any
-particular point on the distribution. Importantly, because \(V\) can be
-estimated from coarsened data, it can be used to estimate the overall
-achievement gap between student subgroups using NCLB mandatorily
-reported data.
+removed, given that it is an estimate of the difference between the
+paired distributions, rather than the difference between proportions at
+any particular point on the distribution. Importantly, because \(V\) can
+be estimated from coarsened data, it can be used to estimate the overall
+achievement gap between student subgroups using data that are
+mandatorily reported as part of NCLB.
 
 \hypertarget{achievement-gaps-in-context}{%
 \subsection{Achievement Gaps in
@@ -334,28 +335,23 @@ effect sizes for schools in California and Oregon, combining these data
 with census data, and producing geo-spatial maps to evaluate both the
 clustering of school-level estimates of achievement gaps, and the extent
 to which any clustering relates to the demographics of the surrounding
-area (e.g., median housing cost). The following five research questions
-were addressed:
+area (e.g., median housing cost). The following research questions were
+addressed:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  To what extent does \(V\) correspond with \(D\), when estimated from
-  the full and coarsened data?
-\item
-  To what extent does \(V\) correspond with itself, when estimated from
-  the full and coarsened data?
+  To what extent does \(V\) estimated with the full data correspond with
+  \(V\) estimated from the coarsened data, and to what extent do these
+  estimates correspond with \(D\)?
 \item
   What does the distribution of school-level achievement gaps look like
-  (shape and variance) in California and Oregon?
+  (i.e., shape and variance) in California and Oregon?
 \item
   Do school-level achievement gap estimates tend to be geographically
-  clustered?
-\item
-  If school-level achievement gaps are geographically clustered, does
-  this clustering relate to demographic characteristics of the
-  surrounding area?
+  clustered, and if so, does this clustering relate to demographic
+  characteristics of the surrounding area?
 \end{enumerate}
 
 \hypertarget{method}{%
@@ -367,15 +363,15 @@ were addressed:
 Multiple sources of data were used. Student-level data included all
 students in the state of Oregon who took the reading/language arts or
 mathematics assessments during the 2012-2013 school year. These data are
-summarized by content area and gender in Table 1, and were collected as
-part of the National Center on Assessment and Accountability for Special
-Education (NCAASE; see \url{http://ncaase.com}), a multi-state
-collaborative focused on growth modeling and evaluating school effect
-policies. These data were used to evaluate the correspondence between
-\(V\) and \(D\) estimated from the full data, as well as the extent to
-which \(V\) estimated with the discrete (coarsened) data (\(V_{d}\))
-corresponded with \(V\) estimated from the full, continuous data
-(\(V_{c}\))
+summarized by content area and race/ethnicity in Table 1, and were
+collected as part of the National Center on Assessment and
+Accountability for Special Education (NCAASE; see
+\url{http://ncaase.com}), a multi-state collaborative focused on growth
+modeling and evaluating school effect policies. These data were used to
+evaluate the correspondence between \(V\) and \(D\) estimated from the
+full data, as well as the extent to which \(V\) estimated with the
+discrete (coarsened) data, \(V_{d}\), corresponded with \(V\) estimated
+from the full, continuous data, \(V_{c}\).
 
 Publicly-available datasets were used to visualize differences in
 achievement gaps in both Oregon and California. For both states, data on
@@ -392,11 +388,22 @@ To map the schools, information on the physical location of the schools,
 in terms of latitude and longitude, were also necessary. For California,
 a data file containing this information for all schools in the state was
 located on the state website (California Department of Education, 2017).
-For Oregon, no specific information on the latitude and longitude of
-schools could be located. However, a file containing the school name and
-physical address was located (Oregon Department of Education, 2017b).
-These addresses were then transformed to latitude and longitude using
-Google's geocode application programming interface (API; Google, 2018)
+For Oregon\footnote{Although preliminary maps were produced for Oregon,
+  we share only the maps from California in this manuscript. We hope to
+  share maps of both Oregon and California during the conference
+  presentation.}, no specific information on the latitude and longitude
+of schools could be located. However, a file containing the school name
+and physical address was located (Oregon Department of Education,
+2017b). These addresses were then transformed to latitude and longitude
+using Google's geocode application programming interface (API; Google,
+2018). Geographic information were combined with census data.
+Specifically, we obtained data on (a) the median housing cost, (b) the
+number of individuals identifying as Black (for California) or
+Hispanic/Latino (for Oregon), and (c) the number of individuals with an
+income to poverty line ratio above 2.0 within each county's census
+tracts, obtained from the 5-year American Community Survey (ACS) - data
+collected as part of the nationwide census (United States Census Bureau,
+2016).
 
 \begin{table}[tbp]
 \begin{center}
@@ -429,15 +436,22 @@ Rdg/Language Arts & White & 220974 & 223.48 & 19.26\\
 \hypertarget{analyses}{%
 \subsection{Analyses}\label{analyses}}
 
-All analyses were conducted within the R statistical computing framework
-(R Core Team, 2017). The \emph{tidyverse} suite of packages (Wickham,
-2017) were used for all data preparation and visualization. Effect sizes
-were estimated using the \emph{esvis} package (Anderson, 2018), and maps
-were produced using a combination of the \emph{leaflet} (Cheng,
-Karambelkar, \& Xie, 2017) and \emph{tidycensus} (Walker, 2018)
-packages. Note that a github repository housing all the code and
-publicly available data from the project is available\footnote{see
-  \url{https://github.com/DJAnderson07/ncme_18}}.
+All analyses were conducted within the R statistical computing
+environment (R Core Team, 2017). The \emph{tidyverse} suite of packages
+(Wickham, 2017) were used for all data preparation and visualization,
+along with \emph{patchwork} to combine multiple plots (Pedersen, 2017).
+Effect sizes were estimated using the \emph{esvis} package (Anderson,
+2018), and maps were produced using a combination of the \emph{leaflet}
+(Cheng, Karambelkar, \& Xie, 2017) and \emph{tidycensus} (Walker, 2018)
+packages. Many of the publicly available datasets were read into R
+directly from the web using the \emph{rio} package (C.-h. Chan, Chan,
+Leeper, \& Becker, 2018). Finally, in the spirit of open and
+reproducible research, all the code used to produce this manuscript are
+publicly available in the form of a GitHub repository\footnote{see
+  \url{https://github.com/DJAnderson07/ncme_18}}. The document itself
+was produced using the \emph{papaja} package, which is an an R Markdown
+extension for rendering manuscripts formatted according to the standards
+of the American Psychological Association (see Aust \& Barth, 2018).
 
 \hypertarget{effect-size-comparison}{%
 \subsubsection{Effect size comparison}\label{effect-size-comparison}}
@@ -465,15 +479,16 @@ how discrepant \(V_c\) was from \(D\).
 
 Following the evaluation of \(V_c\) with \(D\), we collapsed the data
 into counts by PLC within each school - i.e., we manually coarsened the
-data. We then estimated \(V_d\) and compared these estimates with both
-\(V_c\) and \(D\). As stated previously, we expected \(V_c\) and \(D\)
-to differ marginally, given the different assumptions of the estimators.
-However, any differences in \(V_c\) and \(V_d\) could be interpreted as
-differences that arose due to the coarsening of the data.
+data. We then estimated \(V_d\) (\(V\) estimated from discrete data) and
+compared these estimates with both \(V_c\) and \(D\). As stated
+previously, we expected \(V_c\) and \(D\) to differ marginally, given
+the different assumptions of the estimators. However, any differences in
+\(V_c\) and \(V_d\) could be interpreted as differences that arose due
+to the coarsening of the data.
 
-\hypertarget{mapping-school-estimates}{%
-\subsubsection{Mapping school
-estimates}\label{mapping-school-estimates}}
+\hypertarget{evaluating-school-level-achievement-gap-estimates}{%
+\subsubsection{Evaluating school-level achievement gap
+estimates}\label{evaluating-school-level-achievement-gap-estimates}}
 
 Publicly available data reporting on the percentage of students scoring
 in each PLC were obtain for California and Oregon, as described
@@ -486,25 +501,19 @@ Oregon. In both cases, schools were only included if they reported
 percentages for both groups (i.e., met the minimal reporting threshold).
 
 State level evaluations were followed up with county-level
-investigations using geographic and census data. Specifically, we
-obtained data on (a) the number of individuals identifying as Black (for
-California) or Hispanic/Latino (for Oregon), (b) the median housing
-cost, and (c) the number of individuals living at or below the poverty
-line within each county's census tracts, obtained from the 5-year
-American Community Survey (ACS) - data collected as part of the
-nationwide census (United States Census Bureau, 2016). Census tracts
-represent geographic areas with between approximately 1,200 to 8,000
-people, with an optimum size of 4,000 people. Geographic boundaries of
-the census tracts were also obtained from the ACS survey. Maps were then
-produced with the census tracts, colored according to the respective
-variable, with schools displayed as \enquote{pins} on the map. Schools
-were colored according to the magnitude of the estimated achievement
-gap, and the relation between achievement gaps at the school level and
-demographic characteristics of the surrounding area were visually
-examined. All maps were interactive, helping to facilitate exploration
-(e.g., zoom, pan, identify schools by click). In our results, we share
-screen captures from these maps, although it is recognized that some of
-the features are difficult to portray through static images.
+investigations using geographic and census data. Census tracts represent
+geographic areas with between approximately 1,200 to 8,000 people, with
+an optimum size of 4,000 people. Geographic boundaries of the census
+tracts were also obtained from the ACS survey. Maps were then produced
+with the census tracts overlayed and colored according to the respective
+variable. Schools were displayed as \enquote{pins} on the map, and were
+colored according to the magnitude of the estimated achievement gap. The
+relation between achievement gaps at the school level and demographic
+characteristics of the surrounding area were then visually examined. All
+maps were interactive, helping to facilitate exploration (e.g., zoom,
+pan). In our results, we share screen captures from these maps, although
+it is recognized that some of the features are difficult to portray
+through static images.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -521,28 +530,28 @@ with continuous data}
 
 Figure 1 displays the relation between \(V_c\) and \(D\) both in terms
 of the bivariate relation and the distribution of differences with
-respect to \(V\) for both Mathematics and Reading/Language Arts. For the
-bivariate relation, the x-axis was restricted to span -2 to 1.5, which
-resulted in the removal of one outlier point (which had little effect on
-the overall trend, but nonetheless made the bulk of the data more
-difficult to see). Topographical lines are displayed on top of the
+respect to \(V_c\) for both mathematics and reading/language arts. For
+the bivariate relation, the x-axis was restricted to span -2 to 1.5,
+which resulted in the removal of one outlier point (which had little
+effect on the overall trend, but nonetheless made the bulk of the data
+more difficult to see). Topographical lines are displayed on top of the
 points to help display the density of the data, given that many points
 overlapped. The majority of the estimates were negative, as measured by
 either \(V_c\) or \(D\), indicating that students identifying as
 Hispanic/Latino performed, on average, lower than students identifying
 as White in most schools across Oregon. Note that there were a few
-schools, however, for both Mathematics and Reading/Language Arts, where
-the achievement gap was reversed (i.e., students identifying as White
-scored, on average, lower than students identifying as Hispanic/Latino).
-Overall, \(V_c\) and \(D\) correlated at 0.87 for mathematics and 0.86
-for Reading/Language Arts.For the histograms, the vertical line
-represents the mean of the differences for the corresponding content
-area. Note that the mean for each content area was slightly negative
-(\(M_{mth} =\) -0.12, \(M_{rdg} =\) -0.16), indicating that, on average
-for this sample, \(V_c\) represented a slightly lower estimate of the
-effect size (less positive/more negative) relative to \(D\). The
-distributions had a standard deviation of 0.15 and 0.16 for mathematics
-and reading/language arts respectively.
+schools for both content areas, however, where the achievement gap was
+reversed (i.e., students identifying as White scored, on average, lower
+than students identifying as Hispanic/Latino). Overall, \(V_c\) and
+\(D\) correlated at 0.87 for mathematics and 0.86 for reading/language
+arts. For the histograms, the vertical line represents the mean of the
+differences for the corresponding content area. Note that the mean for
+each content area was slightly negative (\(M_{mth} =\) -0.12,
+\(M_{rdg} =\) -0.16), indicating that, on average for this sample,
+\(V_c\) represented a slightly lower estimate of the effect size (less
+positive/more negative) relative to \(D\). The distributions had a
+standard deviation of 0.15 and 0.16 for mathematics and reading/language
+arts respectively.
 
 \begin{figure}
 \centering
@@ -594,66 +603,60 @@ mean displayed by the blue vertical line. Schools with an estimated
 effect above zero represent schools in which the average achievement of
 White students was below the corresponding focal group. This portion of
 each corresponding distribution is displayed by a dark gray color and,
-as can be seen, represented very few schools relative to the toal
-distribution in both cases. The overall mean Hispanic/Latino - White
-achievement gap in Oregon was -0.41 with a standard deviation of 0.29.
-In California, the average Black-White achievement gap was estimated at
--0.54 with a standard deviation of 0.34. When interpreting these
-numbers, it is important to keep in mind that these represent the mean
-and variance of school-level achievement gaps. In other words, the
-overall achievement gap for each state may be marginally different,
-given that these estimates represent the mean of group means (which are
-unbalanced).
+for both states, represented very few schools relative to the total
+distribution. The overall mean Hispanic/Latino - White achievement gap
+in Oregon was -0.41 with a standard deviation of 0.29. In California,
+the average Black-White achievement gap was estimated at -0.54 with a
+standard deviation of 0.34. When interpreting these numbers, it is
+important to keep in mind that these represent the mean and variance of
+school-level achievement gaps. In other words, the overall achievement
+gap for each state may be marginally different, given that these
+estimates represent the mean of group means (which are unbalanced).
 
 \hypertarget{mapping-the-estimates}{%
 \subsubsection{Mapping the Estimates}\label{mapping-the-estimates}}
 
 Following the estimation of all achievement gaps within each state, we
-restricted the analyses to Alameda County in California, and Multnomah
-County in Oregon. Maps were then produced to examine any geographical
+restricted the analyses to Alameda County in California\footnote{As
+  mentioned previously, preliminary maps were also produced for
+  Multnomah County in Oregon and we hope to share these maps during the
+  conference. Readers interested in the Oregon results can find similar
+  screen captures in the GitHub repository from the link noted
+  previously.}. Maps were then produced to examine any geographical
 clustering of school-level achievement gap estimates, as well as
 features of the surrounding area that may correspond with this
-clustering.
-
-While maps were produce for both counties, we report here only on
-Alameda County. Readers interested in the Oregon results can find
-similar screen captures in the GitHub repository from the link noted
-previously (in the footnote).
-
-Figures 4, 5, and 6 displays screen captures of an interactive map of
-Alameda county, with census tracts colored according to the median
+clustering. Figures 4, 5, and 6 displays screen captures of an
+interactive map, with census tracts colored according to the median
 housing cost, number of individuals within the tract identifying as
 Black, and the number of individuals in the tract with an income to
-poverty ratio above 2.0, respectively. Note that in addition to
+poverty line ratio above 2.0, respectively. Note that in addition to
 providing information about the surrounding area, census tracts also
 help describe population density, with smaller polygons representing
-high population density (i.e., more people per square mile). Schools are
-displayed by \enquote{pins}, which are colored according to the
-estimated achievement gap at the school (darker red = larger achievement
-gap). For the actual maps, patterns can be explored more readily by
-utilizing zoom and panning features. Additionally, the name of any
-individual school can be identified by clicking on the pin. In the
-screen capture, it is somewhat difficult to discern some of the census
-tracts, particularly the smaller tracts (high population density) which
-tend to correspond with many overlapping schools. However, the
-clustering of schools corresponding to the estimated achievement gap is
-still readily apparent. The Northwest section of the map includes a
-clear cluster of schools with large achievement gaps, with students
-identifying as Black in these schools performing, on average, more than
-1.5 standard deviations below their White peers. The more central
-portion of the map includes mostly schools with relatively small
-achievement gaps, colored pink (\(V_d =\) -0.3 to -0.9) or white
-(\(V_d =\) -0.3 to 0.3), although even within this cluster there are a
-few schools with very large achievement gaps.
+high population density (i.e., more people per square mile). Schools
+(pins on the map) colored darker red represent larger estimated
+achievement gaps. In the screen capture, it is somewhat difficult to
+discern some of the census tracts, particularly smaller tracts (high
+population density), which tend to correspond with many overlapping
+schools. However, the clustering of schools corresponding to the
+estimated achievement gap is still readily apparent. The Northwest
+section of the map includes a clear cluster of schools with large
+achievement gaps, with students identifying as Black in these schools
+performing, on average, more than 1.5 standard deviations below their
+White peers. The more central portion of the map includes mostly schools
+with relatively moderate achievement gaps, colored pink (\(V_d =\) -0.3
+to -0.9), or essentially no achievement gap, colored white (\(V_d =\)
+-0.3 to 0.3). However, even within this cluster of schools with more
+moderate achievement gaps, there are a few schools with very large
+achievement gaps.
 
 In terms of using the surrounding demographics of the area to predict
 school-level achievement gaps, there are no clearly discernible patterns
 among any of the maps displayed. Figure 6, displaying the number of
-income to poverty ratios above 2.0, has the most variability and there
-does appear to be a modest relation there. In particular, the cluster of
-schools with high estimated achievement gaps in the Northwest are
-generally in areas with fewer individuals with an income to poverty
-ratio over 2.0.
+people within each tract with an income to poverty ratio above 2.0, has
+the most variability and there does appear to be a modest relation. In
+particular, the cluster of schools with high estimated achievement gaps
+in the Northwest are generally in areas with fewer individuals with an
+income to poverty ratio over 2.0.
 
 \begin{figure}
 \centering
@@ -683,7 +686,7 @@ Education has somewhat of a unique challenge when it comes to making
 data open and accessible, given individuals of a protected class
 (minors) are included in the vast majority of cases. Aggregating data
 helps make these data publicly available and more easy to share, but
-comes with challenges in reducing the overall utility of data for
+comes with challenges in reducing the overall utility of the data for
 research purposes. This paper illustrated one method of using publicly
 available data, which have been reported by all states on a mandatory
 basis since the implementation of NCLB, to address a substantively
@@ -698,7 +701,7 @@ surrounding area.
 
 In this study, the largest gains to evaluating achievement gaps via
 mapping was the clear cluster of schools found with large achievement
-gaps. Without looking at the data geo-spatially, or being intimately
+gaps. Without looking at the data spatially, or being intimately
 familiar with the set of schools, we likely would have observed the
 schools as all having large achievement gaps, but missed that they were
 nearly all clustered in the same geographical area. The census data did
@@ -724,23 +727,24 @@ difference between two distributions. Important differences at specific
 points in the distribution may therefore be missed by these summary
 measures. For example, it is possible for large achievement gaps to be
 apparent at one point in the distribution, and not others, including the
-directionality of the effect even reversing (Anderson, 2018; see Daniel,
-Stevens, \& Nese, 2017; Stevens, Daniel, Nese, \& Tindal, 2017). Despite
-using empirical data, however, we were able to know \enquote{truth}
-relative to the extent that \(V_d\) recovered the estimate from \(V_c\).
+directionality of the effect even reversing (Anderson, 2018; Anderson,
+Stevens, \& Nese, 2017; Stevens, Anderson, Nese, \& Tindal, 2017).
+Despite using empirical data, however, we were able to know
+\enquote{truth} relative to the extent that \(V_d\) recovered the
+estimate from \(V_c\).
 
 This research also only preliminarily examined the ACS data, but the
 ACS, and the census bureau generally, has a wealth of data that have
 generally been underutilized in educational research. This manuscript
 investigated three of potentially thousands of variables that could
-account for variability among schools not only in achievement gaps, but
-a host of other outcomes (e.g., graduation rates). A logical extension
-of this work would be to include data on criminal activity in the area,
-given the results of N. K. Bowen and Bowen (1999) and others (e.g.,
-McCoy et al., 2013) indicating that neighborhood danger relates to
-school-wide outcomes. These data are not available as part of the ACS,
-which is the most up-to-date census dataset, but are available through
-other US Census Bureau datasets.
+account for variability among schools, not only in achievement gaps, but
+a host of other outcomes (e.g., graduation rates or behavioral data). A
+logical extension of this work would be to include data on criminal
+activity in the area, given the results of N. K. Bowen and Bowen (1999)
+and others (e.g., McCoy et al., 2013) indicate that neighborhood danger
+relates to school-wide outcomes. These data are not available as part of
+the ACS, which is the most up-to-date census dataset, but are available
+through other US Census Bureau datasets.
 
 \hypertarget{conclusions}{%
 \subsection{Conclusions}\label{conclusions}}
@@ -749,16 +753,16 @@ The approach to estimating school-level achievement gaps illustrated
 here can lead to potentially rich datasets that can be shared publicly
 without concerns of jeopardizing student privacy, given that
 summary-level data are used to produce the estimates. In this study, we
-were to estimate achievement gaps for every school in both California a
-Oregon. Future research could use these estimates for further research.
-For example, it would be interesting to actually model the spatial
-features, rather than just explore them visually, which could be done by
-estimating a multilevel model with census tract entered as a random
-effect. The variability in school-level achievement gaps lying between
-census tracts could then be estimated, and census variables could be
-used to account for this variability. An incredible array of questions
-could be addressed within this framework, while only using publicly
-available data.
+estimated achievement gaps for every school in both California and
+Oregon that met minimum reporting requirements. Future research could
+use these estimates for further research. For example, it would be
+interesting to actually model the spatial features, rather than just
+explore them visually, which could be done by estimating a multilevel
+model with census tract entered as a random effect. The variability in
+school-level achievement gaps lying between census tracts could then be
+estimated, and census variables could be used to account for this
+variability. An incredible array of questions could be addressed within
+this framework, while using only publicly available data.
 
 \newpage
 
@@ -777,6 +781,15 @@ with us census tracts}. Retrieved March 24, 2018, from
 Anderson, D. (2018). \emph{Esvis: Visualization and estimation of effect
 sizes}. Retrieved from \url{https://github.com/DJAnderson07/esvis}
 
+\leavevmode\hypertarget{ref-anderson17b}{}%
+Anderson, D., Stevens, J. J., \& Nese, F. T., J. (2017).
+\emph{Visualizing achievement gaps across the full distribution}.
+Retrieved from \url{https://djanderson07.github.io/ncme_2017/}
+
+\leavevmode\hypertarget{ref-papaja}{}%
+Aust, F., \& Barth, M. (2018). \emph{papaja: Create APA manuscripts with
+R Markdown}. Retrieved from \url{https://github.com/crsh/papaja}
+
 \leavevmode\hypertarget{ref-bowen99}{}%
 Bowen, N. K., \& Bowen, G. L. (1999). Effects of crime and violence in
 neighborhoods and schools on the school behavior and performance of
@@ -794,15 +807,14 @@ California Department of Education. (2017). \emph{Public schools and
 districts files}. Retrieved March 24, 2018, from
 \url{https://www.cde.ca.gov/ds/si/ds/pubschls.asp}
 
+\leavevmode\hypertarget{ref-rio}{}%
+Chan, C.-h., Chan, G. C., Leeper, T. J., \& Becker, J. (2018).
+\emph{Rio: A swiss-army knife for data file i/o}.
+
 \leavevmode\hypertarget{ref-leaflet}{}%
 Cheng, J., Karambelkar, B., \& Xie, Y. (2017). \emph{Leaflet: Create
 interactive web maps with the javascript 'leaflet' library}. Retrieved
 from \url{https://CRAN.R-project.org/package=leaflet}
-
-\leavevmode\hypertarget{ref-anderson17b}{}%
-Daniel, A., Stevens, J. J., \& Nese, F. T., J. (2017). \emph{Visualizing
-achievement gaps across the full distribution}. Retrieved from
-\url{https://djanderson07.github.io/ncme_2017/}
 
 \leavevmode\hypertarget{ref-dawes16}{}%
 Dawes, S. S., Vidiasova, L., \& Parkhimovich, O. (2016). Planning and
@@ -889,6 +901,10 @@ Retrieved March 24, 2018, from
 Oregon Department of Education. (2017b). Retrieved March 24, 2018, from
 \url{http://www.ode.state.or.us/pubs/labels/SchoolMail.xls}
 
+\leavevmode\hypertarget{ref-patchwork}{}%
+Pedersen, T. L. (2017). \emph{Patchwork: The composer of ggplots}.
+Retrieved from \url{https://github.com/thomasp85/patchwork}
+
 \leavevmode\hypertarget{ref-r}{}%
 R Core Team. (2017). \emph{R: A language and environment for statistical
 computing}. Vienna, Austria: R Foundation for Statistical Computing.
@@ -910,7 +926,7 @@ meta-analytic review of research. \emph{Review of Educational Research},
 \emph{75}(3), 417--453.
 
 \leavevmode\hypertarget{ref-stevens17}{}%
-Stevens, J. J., Daniel, A., Nese, F. T., J, \& Tindal, G. (2017).
+Stevens, J. J., Anderson, D., Nese, F. T., J, \& Tindal, G. (2017).
 \emph{Using effect size measures to estimate and report achievement
 gaps}. Retrieved from
 \url{http://www.ncaase.com/docs/Stevens_et_al_NCME_2017-1.pdf}
