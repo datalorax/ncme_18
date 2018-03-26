@@ -8,3 +8,53 @@ with continuous data}
 \end{figure*}
 \efloatseparator
  
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{anderson_ncme18_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{\label{fig:unnamed-chunk-2}Differences in V estimated from
+coarsened data, and V and Cohen's D estimated from continuous data}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{anderson_ncme18_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{\label{fig:unnamed-chunk-3}Distribution of Achievement Gap Effect
+Sizes in Oregon and California}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{anderson_ncme18_files/screen_caps/median_house.png}
+\caption{Alameda County School-Level Achievement Gaps and Median Housing
+Cost}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{anderson_ncme18_files/screen_caps/n_black.png}
+\caption{Alameda County School-Level Achievement Gaps and Number of
+Individuals Identifying as Black}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{anderson_ncme18_files/screen_caps/poverty.png}
+\caption{Alameda County School-Level Achievement Gaps and Median Housing
+Cost}
+\end{figure*}
+\efloatseparator
+ 

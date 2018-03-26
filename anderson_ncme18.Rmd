@@ -39,12 +39,30 @@ class             : "man, fleqn, noextraspace"
 output            : papaja::apa6_pdf
 ---
 
-```{r load_packages, include = FALSE}
-library("papaja")
-knitr::opts_chunk$set(echo    = FALSE,
-                      message = FALSE,
-                      warning = FALSE,
-                      results = "asis")
+```{r load_packages, include = FALSE, cache = FALSE}
+library(tidyverse)
+library(fs)
+library(patchwork)
+library(papaja)
+library(knitr)
+library(esvis)
+library(leaflet)
+library(tidycensus)
+library(sf)
+
+theme_set(theme_minimal())
+theme_update(plot.title = element_text(hjust = 0.5))
+options(datatable.showProgress = FALSE,
+        tigris_use_cache = TRUE)
+
+opts_chunk$set(echo        = FALSE,
+               message     = FALSE,
+               warning     = FALSE,
+               results     = "asis",
+               cache       = TRUE,
+               ca.comments = FALSE,
+               autodep     = TRUE)
+dep_auto()
 ```
 
 Recent years have seen increased attention on open data (i.e., free and publicly available) as one component of open science [e.g., see @dawes16; @sieber15; @zuiderwijk14]. The National Institute of Health (NIH), for example, recently made 64 data sharing repositories publicly available [@nih_16]. The National Science Foundation (NSF) has placed a similarly high emphasis on making data from funded projects publicly available, as part of their Open Government Plan [@nsf16]. The Institute of Education Sciences (IES) has similarly moved towards greater requirements for data sharing, with Goal 4 Effectiveness grants requiring a data sharing component since 2013, and Goal 3 Efficacy and Replication awards requiring data sharing since 2016 [@ies16]. Despite these movements, data that are fully open remain rare, particularly in educational research. For example, the website data.gov represents the "home of the U.S. Government's open data", housing nearly a quarter of a million datasets. Of these datasets, only 365 were tagged with the keyword "Education" (as of this writing), and the vast majority of these receive an openness score of one star out of a possible five.
@@ -66,7 +84,14 @@ A wealth of previous research has examined achievement differences between stude
 In addition to school compositional effects, there is considerable evidence that crime rates in the surrounding area relate to student achievement [e.g., @gonzales96; @mccoy13]. In particular, @bowen99 found that measures of neighborhood danger were predictive of a number of outcomes, but particularly measures of behavior and attendance. The authors found that males and students identifying as African American reported higher rates of exposure to both neighborhood and school danger. These results are particularly relevant for achievement gaps when considering @lee09 found that "Black students were 2.88 times more likely than White peers to reside in the neighborhoods with high crime-high poverty" (p. 165). Further, as noted by @gregory10, large racial disproportionality exists in terms of school-wide suspension and expulsion rates. This disproportionality may be partially attributable to neighborhood/community differences, which ultimately lead to fewer opportunities for students to learn (i.e., more time spent out of the classroom) and a broadening of the achievement gap.
 
 ## Summary
-The purpose of this paper is to evaluate differences in achievement gaps between schools using open, publicly available data, reported by schools on a mandatory basis as part of NCLB. We begin, however, by first evaluating $V$ using empirical, student-level data collected across the state of Oregon. Specifically, we evaluate the extent to which $V$ corresponds with $D$ when using the full sample. We expect a strong but imperfect relation, given the differing assumption of the two effect sizes. We then manually coarsen the data into the proportion of students scoring in each PLC, re-estimate $V$, and compare the estimates to those made from the continuous data. Following this investigation, we illustrate how this approach can be useful when working with publicly available data, specifically by using $V$ to calculate achievement gap effect sizes for schools in California and Oregon, combining these data with census data, and producing geo-spatial maps to evaluate both the clustering of school-level estimates of achievement gaps, and the extent to which any clustering relates to the demographics of the surrounding area (e.g., median housing cost).
+The purpose of this paper is to evaluate differences in achievement gaps between schools using open, publicly available data, reported by schools on a mandatory basis as part of NCLB. We begin, however, by first evaluating $V$ using empirical, student-level data collected across the state of Oregon. Specifically, we evaluate the extent to which $V$ corresponds with $D$ when using the full sample. We expect a strong but imperfect relation, given the differing assumption of the two effect sizes. We then manually coarsen the data into the proportion of students scoring in each PLC, re-estimate $V$, and compare the estimates to those made from the continuous data. Following this investigation, we illustrate how this approach can be useful when working with publicly available data, specifically by using $V$ to calculate achievement gap effect sizes for schools in California and Oregon, combining these data with census data, and producing geo-spatial maps to evaluate both the clustering of school-level estimates of achievement gaps, and the extent to which any clustering relates to the demographics of the surrounding area (e.g., median housing cost). The following five research questions were addressed:
+
+1. To what extent does $V$ correspond with $D$, when estimated from the full and coarsened data?
+2. To what extent does $V$ correspond with itself, when estimated from the full and coarsened data?
+3. What does the distribution of school-level achievement gaps look like (shape and variance) in California and Oregon?
+4. Do school-level achievement gap estimates tend to be geographically clustered? 
+5. If school-level achievement gaps are geographically clustered, does this clustering relate to demographic characteristics of the surrounding area?
+
 
 # Method
 ## Data Sources
@@ -77,9 +102,6 @@ Publicly-available datasets were used to visualize differences in achievement ga
 To map the schools, information on the physical location of the schools, in terms of latitude and longitude, were also necessary. For California, a data file containing this information for all schools in the state was located on the state website [@ca17b]. For Oregon, no specific information on the latitude and longitude of schools could be located. However, a file containing the school name and physical address was located [@or17b]. These addresses were then transformed to latitude and longitude using Google's geocode application programming interface [API; @google] 
 
 ```{r descrips}
-library(tidyverse)
-library(fs)
-
 d <- map_df(dir_ls("data", regexp = "MA|RL"), 
             read_csv, 
             .id = "content_area") %>%
@@ -103,7 +125,7 @@ d <- map_df(dir_ls("data", regexp = "MA|RL"),
 d %>%
   mutate(`Content Area` = ifelse(content_area == "MA",
                                "Mathematics",
-                               "Reading/Language Arts"),
+                               "Rdg/Language Arts"),
          ethniccd       = case_when(ethniccd == "A" ~ "Asian",
                                     ethniccd == "B" ~ "Black",
                                     ethniccd == "H" ~ "Hispanic",
@@ -146,52 +168,496 @@ State level evaluations were followed up with county-level investigations using 
 ```{r, coh_v_compare1}
 schls <- d %>% 
   filter(ethniccd == "W"| ethniccd == "H") %>% 
-  group_by(scid, ethniccd) %>% 
+  group_by(scid, ethniccd, content_area) %>% 
   mutate(n = n()) %>% 
   filter(n > 6) %>% 
-  group_by(scid) %>% 
+  group_by(scid, content_area) %>% 
   count(ethniccd) %>% 
   mutate(n = n()) %>% 
   filter(n == 2) %>% 
   semi_join(d, .)
 
-library(esvis)
 es_c <- schls %>% 
-  group_by(scid) %>% 
+  group_by(scid, content_area) %>% 
   nest() %>% 
   mutate(d = map_dbl(data, ~coh_d(rit ~ ethniccd, ., ref_group = "W")$estimate),
-         v = map_dbl(data, ~v(rit ~ ethniccd, ., ref_group = "W")$estimate),
-         diff = v - d)
-
-theme_set(theme_minimal())
-theme_update(plot.title = element_text(hjust = 0.5))
-
-vd_c <- ggplot(es_c, aes(v, d)) +
+         v_c = map_dbl(data, ~v(rit ~ ethniccd, ., ref_group = "W")$estimate),
+         dvc_diff = v_c - d,
+         content_area = ifelse(content_area == "MA", 
+                                "Mathematics", 
+                                "Rdg/Language Arts"))
+  
+vd_c <- ggplot(es_c, aes(v_c, d)) +
   geom_point(color = "gray50") +
   geom_density2d(color = "gray80") +
   xlim(-2, 1.5) +
   geom_smooth(color = "cornflowerblue") +
+  facet_wrap(~content_area) +
   labs(x = expression(V[c]),
        y = expression(D),
        title = "Bivariate Relation")
 
-vdiff_c <- ggplot(es_c, aes(diff)) +
-  geom_histogram(alpha = 0.7) +
-  geom_vline(aes(xintercept = mean(diff, na.rm = TRUE)),
+vdiff_c <- ggplot(es_c, aes(dvc_diff)) +
+  geom_histogram(alpha = 0.7, bins = 35) +
+  geom_vline(aes(xintercept = mean(dvc_diff, na.rm = TRUE)),
              color = "cornflowerblue", 
              lwd = 1.3) +
-  labs(x = expression(V[d] - D),
+  facet_wrap(~content_area) +
+  labs(x = expression(V[c] - D),
        y = "Count",
        title = "Effect Size Differences")
+
+dvc_cor <- es_c %>% 
+  group_by(content_area) %>% 
+  summarize(cor = round(cor(v_c, d), 2))
 ```
 
-```{r, fig.cap= "Differences in Cohen's D and V estimated with continuous data"}
-library(patchwork)
-vd_c + vdiff_c 
+```{r, fig.cap= "Differences in Cohen's D and V estimated with continuous data", fig.height=8}
+vd_c / vdiff_c 
 ```
 
-Figure 1 displays the relation between $V_c$ and $D$ both in terms of the bivariate relation and the distribution of differences with respect to $V$. The vertical line on the histogram indicates the mean of the differences. Note that it was slightly negative ($M =$ `r round(mean(es_c$diff, na.rm = TRUE),2)`), indicating that, on average for this sample, $V$ represented a slightly lower estimate of the effect size.
+Figure 1 displays the relation between $V_c$ and $D$ both in terms of the bivariate relation and the distribution of differences with respect to $V$ for both Mathematics and Reading/Language Arts. For the bivariate relation, the x-axis was restricted to span -2 to 1.5, which resulted in the removal of one outlier point (which had little effect on the overall trend, but nonetheless made the bulk of the data more difficult to see). Topographical lines are displayed on top of the points to help display the density of the data, given that many points overlapped. The majority of the estimates were negative, as measured by either $V_c$ or $D$, indicating that students identifying as Hispanic/Latino performed, on average, lower than students identifying as White in most schools across Oregon. Note that there were a few schools, however, for both Mathematics and Reading/Language Arts, where the achievement gap was reversed (i.e., students identifying as White scored, on average, lower than students identifying as Hispanic/Latino). Overall, $V_c$ and $D$ correlated at `r dvc_cor$cor[dvc_cor$content_area == "Mathematics"]` for mathematics and `r dvc_cor$cor[dvc_cor$content_area == "Rdg/Language Arts"]` for Reading/Language Arts.For the histograms, the vertical line represents the mean of the differences for the corresponding content area. Note that the mean for each content area was slightly negative ($M_{mth} =$ `r round(tapply(es_c$dvc_diff, es_c$content_area, mean)["Mathematics"], 2)`, $M_{rdg} =$ `r round(tapply(es_c$dvc_diff, es_c$content_area, mean)["Rdg/Language Arts"], 2)`), indicating that, on average for this sample, $V_c$ represented a slightly lower estimate of the effect size (less positive/more negative) relative to $D$. The distributions had a standard deviation of `r round(tapply(es_c$dvc_diff, es_c$content_area, sd)["Mathematics"], 2)` and `r round(tapply(es_c$dvc_diff, es_c$content_area, sd)["Rdg/Language Arts"], 2)` for mathematics and reading/language arts respectively.
 
+
+```{r v_coarsened_compare}
+schls_coarsened <- schls %>% 
+  group_by(content_area, scid, ethniccd, plc) %>% 
+  count() %>% 
+  group_by(scid, ethniccd, content_area) %>% 
+  mutate(pct = n/sum(n)) %>% 
+  select(-n) %>% 
+  spread(plc, pct) %>% 
+  mutate(`-1` = 0) %>% 
+  gather(plc, pct, -1:-3, convert = TRUE) %>% 
+  arrange(scid, ethniccd, plc) %>% 
+  mutate(cum_pct = cumsum(ifelse(is.na(pct), 0, pct))) %>% 
+  select(-pct) %>% 
+  spread(ethniccd, cum_pct) 
+
+es_d <- schls_coarsened %>% 
+  group_by(scid, content_area) %>% 
+  summarize(auc = sfsmisc::integrate.xy(H, W, use.spline = FALSE), 
+            v_d   = sqrt(2)*qnorm(auc)) %>% 
+  mutate(content_area = ifelse(content_area == "MA", 
+                                "Mathematics", 
+                                "Rdg/Language Arts"))
+
+es <- left_join(es_c, es_d) %>% 
+  mutate(dvd_diff = v_d - d,
+         vcvd_diff = v_d - v_c)
+
+d_vd <- ggplot(es, aes(v_d, d)) +
+  geom_point(color = "gray50") +
+  geom_density2d(color = "gray80") +
+  geom_smooth(color = "cornflowerblue") +
+  facet_wrap(~content_area) +
+  labs(x = expression(V[d]),
+       y = expression(D),
+       title = "Bivariate Relation") +
+  theme(plot.title = element_text(hjust = -0.2))
+
+vc_vd <- ggplot(es, aes(v_d, v_c)) +
+  geom_point(color = "gray50") +
+  geom_density2d(color = "gray80") +
+  geom_smooth(color = "cornflowerblue") +
+  facet_wrap(~content_area) +
+  labs(x = expression(V[d]),
+       y = expression(V[c]),
+       title = " ")
+
+dvd_diff <- ggplot(es, aes(dvd_diff)) +
+  geom_histogram(alpha = 0.7, bins = 35) +
+  geom_vline(aes(xintercept = mean(dvd_diff, na.rm = TRUE)),
+             color = "cornflowerblue", 
+             lwd = 1.3) +
+  xlim(-1.5, 1.5) +
+  facet_wrap(~content_area) +
+  labs(x = expression(V[d] - D),
+       y = "Count",
+       title = "Effect Size Differences") +
+  theme(plot.title = element_text(hjust = -0.2))
+
+vcvd_diff <- ggplot(es, aes(vcvd_diff)) +
+  geom_histogram(alpha = 0.7, bins = 35) +
+  geom_vline(aes(xintercept = mean(vcvd_diff, na.rm = TRUE)),
+             color = "cornflowerblue", 
+             lwd = 1.3) +
+  xlim(-1.5, 1.5) +
+  facet_wrap(~content_area) +
+  labs(x = expression(V[d] - V[c]),
+       y = "Count",
+       title = " ")
+
+cors <- es %>% 
+  group_by(content_area) %>% 
+  summarize(mean_dvd_diff  = round(mean(dvd_diff), 2),
+            mean_vcvd_diff = round(mean(vcvd_diff), 2),
+            cor_dvd  = round(cor(d, v_d), 2),
+            cor_vcvd = round(cor(v_c, v_d), 2))
+```
+
+```{r fig.cap = "Differences in V estimated from coarsened data, and V and Cohen's D estimated from continuous data", fig.height = 8}
+(d_vd + vc_vd) / (dvd_diff + vcvd_diff)
+```
+
+Figure 2 displays the bivariate relation and differences between $V_d$ estimated with discrete (coarsened) data, and Cohen's $D$ and $V_c$ estimated with the full data. As would be expected, the relation between $V_d$ and $D$ was less strong than the relation between $V_c$ and $D$. However, the overall relation was still quite strong, correlating at `r cors$cor_dvd[cors$content_area == "Mathematics"]` and `r cors$cor_dvd[cors$content_area == "Rdg/Language Arts"]` for mathematics and reading/language arts, respectively. The standard deviations of the differences were also marginally more broad, at `r round(tapply(es$dvd_diff, es$content_area, sd)["Mathematics"], 2)` and `r round(tapply(es$dvd_diff, es$content_area, sd)["Rdg/Language Arts"], 2)`, respectively. The coarsening of the data did also lead to some differences in the estimated effect between $V_c$ and $V_d$. The correlations were similar in magnitude to $V_c$ and $D$, correlating at `r cors$cor_vcvd[cors$content_area == "Mathematics"]` and `r cors$cor_vcvd[cors$content_area == "Rdg/Language Arts"]` for mathematics and reading/language arts, respectively. The distribution of differences centered on `r cors$mean_vcvd_diff[cors$content_area == "Mathematics"]` and `r cors$mean_vcvd_diff[cors$content_area == "Rdg/Language Arts"]` for mathematics and reading/language arts, respectively, implying that, on average, there was very little difference between $V$ calculated with the continuous data ($V_c$) and $V$ calculated with the discrete data ($V_d$). The standard deviations of these distributions were `r round(tapply(es$vcvd_diff, es$content_area, sd)["Mathematics"], 2)` and `r round(tapply(es$dvd_diff, es$content_area, sd)["Rdg/Language Arts"], 2)`. 
+
+## School-Level Achievement Gaps
+
+```{r school_achievement_gaps}
+#### Oregon ####
+or_base_url <- "http://www.oregon.gov/ode/educator-resources/assessment/TestResults2017/"
+or <- rio::import(paste0(or_base_url, "pagr_schools_math_all_1617.xlsx"),
+                  setclass = "tbl_df", 
+                  na = c("-", "--", "*")) %>% 
+  janitor::clean_names()
+
+or <- or %>% 
+  select(district_id:school, 
+         student_group, 
+         grade_level, 
+         starts_with("percent_level")) %>% 
+  filter(grade_level == "All Grades",
+         student_group == "Hispanic/Latino" | 
+           student_group == "White") %>% 
+  gather(plc, percent, starts_with("percent")) %>% 
+  filter(!is.na(percent)) %>% 
+  mutate(plc = parse_number(plc))
+
+# Select for only schools with both groups represented
+or <- or %>% 
+  group_by(school_id) %>% 
+  count(student_group) %>%
+  ungroup() %>% 
+  count(school_id) %>% 
+  filter(nn == 2) %>% 
+  semi_join(or, .)
+
+or <- or %>% 
+  mutate(percent = percent / 100) %>% 
+  spread(plc, percent) %>% 
+  mutate(`-1` = 0) %>% 
+  gather(plc, percent, `1`:`-1`, convert = TRUE) %>% 
+  arrange(school_id, student_group, plc) %>% 
+  group_by(school_id, student_group) %>% 
+  mutate(cumsum = cumsum(percent)) %>% 
+  select(-percent) %>% 
+  spread(student_group, cumsum) %>% 
+  janitor::clean_names()
+
+or_es <- or %>% 
+  group_by(school_id) %>% 
+  nest() %>% 
+  mutate(auc = map_dbl(data, ~sfsmisc::integrate.xy(.$hispanic_latino,
+                                                    .$white,
+                                                    use.spline = FALSE)),
+         v   = sqrt(2)*qnorm(auc))
+or_schools <- or_es %>% 
+  mutate(positive = ifelse(v > 0, "above", "below")) %>% 
+ggplot(aes(v, fill = positive)) +
+  geom_histogram(alpha = 0.7, bins = 75) +
+  geom_vline(aes(xintercept = mean(v)), 
+             color = "cornflowerblue",
+             lwd = 1.5) + 
+  scale_fill_manual(values = c("black", "gray40")) +
+  guides(fill = "none") +
+  labs(x = expression(V[d]),
+       y = "Count",
+       title = "Oregon",
+       subtitle = "Hispanic/Latino - White Achievement Gap") +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+#### California ####
+ca_base_url <- "http://www3.cde.ca.gov/caasppresearchfiles/2017/sb/"
+ca <- rio::import(paste0(ca_base_url, "sb_ca2017_all_csv_v2.zip"),
+                  which = "sb_ca2017_all_csv_v2.txt",
+                  setclass = "tbl_df",
+                  na = "*") %>% 
+  janitor::clean_names()
+
+ca_subgroups <- rio::import(paste0(ca_base_url, "subgroups.zip"),
+                            setclass = "tbl_df", 
+                            na = "*")
+names(ca_subgroups)[2:4] <- c("subgroup_id", "subgroup_cat", "subgroup")
+
+ca <- left_join(ca, ca_subgroups[ ,-1]) %>% 
+  mutate(test_id = ifelse(test_id == "1", "ELA", "Math")) %>% 
+  filter(test_id == "Math") %>% 
+  select(county_code:school_code, subgroup_id, subgroup_cat, grade, test_id,
+         percentage_standard_exceeded,
+         percentage_standard_met,
+         percentage_standard_nearly_met, 
+         percentage_standard_not_met) %>% 
+  gather(plc, percent, starts_with("percentage")) %>% 
+  mutate(plc = str_replace(plc, "percentage_standard_", ""))
+
+ca_props <- ca %>% 
+  filter(subgroup_id == "74" |
+         subgroup_id == "80",
+         grade == 13) %>% 
+  mutate(percent = as.numeric(percent)/100,
+           plc = case_when(plc == "exceeded" ~ 4,
+                           plc == "met" ~ 3,
+                           plc == "nearly_met" ~ 2,
+                           plc == "not_met" ~ 1,
+                           TRUE ~ 999)) %>% 
+  filter(!is.na(percent), 
+         school_code != "0000000") %>% 
+  spread(plc, percent) %>% 
+  mutate(`-1` = 0) %>% 
+  gather(plc, percent, `1`:`-1`, convert = TRUE) %>% 
+  arrange(school_code, subgroup_id, grade, test_id, plc) %>% 
+  group_by(school_code, subgroup_id, grade, test_id) %>% 
+  mutate(cumsum = cumsum(percent)) %>% 
+  ungroup() %>% 
+  select(-subgroup_id, -percent) %>% 
+  spread(subgroup_cat, cumsum) %>% 
+  na.omit() %>% 
+  rename("black" = `Black or African American`,
+         "white" = "White")
+
+ca_es <- ca_props %>% 
+  group_by(school_code, test_id, grade) %>% 
+  nest() %>% 
+  mutate(auc = map_dbl(data, 
+                       ~sfsmisc::integrate.xy(.$black, 
+                                              .$white, 
+                                              use.spline = FALSE)), 
+         v   = sqrt(2)*qnorm(auc))
+
+ca_schools <- ca_es %>% 
+  mutate(positive = ifelse(v > 0, "above", "below")) %>% 
+ggplot(aes(v, fill = positive)) +
+  geom_histogram(alpha = 0.7, bins = 75) +
+  geom_vline(aes(xintercept = mean(v)), 
+             color = "#8da0cb",
+             lwd = 1.5) + 
+  scale_fill_manual(values = c("black", "gray40")) +
+  guides(fill = "none") +
+  labs(x = expression(V[d]),
+       y = "Count",
+       title = "California",
+       subtitle = "Black-White Achievement Gap") +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+```
+
+```{r fig.cap = "Distribution of Achievement Gap Effect Sizes in Oregon and California"}
+or_schools + ca_schools
+```
+
+### Overall Estimates by State
+Using publicly available data, we calculated the Black-White achievement gap for all schools meeting minimum reporting criteria for both groups of students in California, and the Hispanic/Latino achievement gap for all schools meeting minimum reporting criteria for both groups in Oregon. For both states, we limited the analysis to only mathematics. Figure 3 displays the distribution of effects for each state, with the mean displayed by the blue vertical line. Schools with an estimated effect above zero represent schools in which the average achievement of White students was below the corresponding focal group. This portion of each corresponding distribution is displayed by a dark gray color and, as can be seen, represented very few schools relative to the toal distribution in both cases. The overall mean Hispanic/Latino - White achievement gap in Oregon was `r round(mean(or_es$v), 2)` with a standard deviation of `r round(sd(or_es$v), 2)`. In California, the average Black-White achievement gap was estimated at `r round(mean(ca_es$v), 2)` with a standard deviation of `r round(sd(ca_es$v), 2)`. When interpreting these numbers, it is important to keep in mind that these represent the mean and variance of school-level achievement gaps. In other words, the overall achievement gap for each state may be marginally different, given that these estimates represent the mean of group means (which are unbalanced).
+
+### Mapping the Estimates
+```{r maps, eval = FALSE}
+#### California ####
+ca_es <- ca_es %>% 
+  mutate(county = map_chr(data, ~unique(.$county_code)))
+
+ca_sch_names <- rio::import(paste0(ca_base_url, "sb_ca2017_all_csv_v2.zip"),
+                  which = "sb_ca2017entities_csv.txt",
+                  setclass = "tbl_df",
+                  na = "*") %>% 
+  janitor::clean_names() %>%  
+  select(school_code, school_name, county_name)
+
+ca_es <- left_join(ca_es, ca_sch_names) %>% 
+  mutate(school_name = tolower(school_name))
+
+addies <- read_csv("data/pubschls.csv") %>% 
+  janitor::clean_names() %>% 
+  unite(address, street, city, state, zip, sep = " ") %>% 
+  select(school, address, county, latitude, longitude) %>% 
+  mutate(school = tolower(school)) %>% 
+  rename(school_name = school,
+         county_name = county)
+
+ca_es <- left_join(ca_es, addies)
+alameda <- ca_es %>% 
+  filter(county == "01", 
+         test_id == "Math",
+         grade == 13) %>% 
+  na.omit()
+
+# Inspect variable to plot
+# v16 <- load_variables(2016, "acs5", cache = TRUE)
+# View(v16)
+
+alameda_house <- get_acs(geography = "tract", 
+                         variables = "B25077_001", 
+                         state = "CA",
+                         county = "Alameda",
+                         geometry = TRUE) %>% 
+  filter(estimate > 0) %>% 
+  rename(median_house = estimate) %>% 
+  select(-variable, -moe)
+
+alameda_black <- get_acs(geography = "tract", 
+                         variables = "C02003_004E", 
+                         state = "CA",
+                         county = "Alameda",
+                         geometry = FALSE) %>% 
+  filter(estimate > 0) %>% 
+  rename(n_black = estimate)  %>% 
+  select(-variable, -moe)
+
+alameda_poverty <- get_acs(geography = "tract", 
+                           variables = "C17002_008E", 
+                           state = "CA",
+                           county = "Alameda",
+                           geometry = FALSE) %>% 
+  filter(estimate > 0) %>% 
+  rename(n_poverty = estimate) %>% 
+  select(-variable, -moe)
+  
+
+alameda_geo <- left_join(alameda_house, alameda_black, st_join = FALSE)
+alameda_geo <- left_join(alameda_geo, alameda_poverty)
+
+pal_house <- colorNumeric(palette = "viridis", 
+                    domain = alameda_geo$median_house)
+pal_black <- colorNumeric(palette = "viridis", 
+                    domain = alameda_geo$n_black)
+pal_pov <- colorNumeric(palette = "viridis", 
+                    domain = alameda_geo$n_poverty)
+
+pal_col <- function(df) {
+  sapply(df[["v"]], function(rating) {
+    if(rating > 0.3) {
+      "blue"
+    } else if(rating <= 0.3 & rating > -0.3) {
+      "white"
+    } else if(rating <= -0.3 & rating > -0.9) {
+      "lightred"
+    } else if(rating <= -0.9 & rating > -1.5) {
+      "red"
+    } else {
+      "darkred"
+    } })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = pal_col(alameda)
+)
+
+alameda_geo %>%
+  st_transform(crs = "+init=epsg:4326") %>%
+  leaflet() %>%
+  addProviderTiles(provider = "CartoDB.Positron") %>%
+  addPolygons(popup = ~ str_extract(NAME, "^([^,]*)"),
+              stroke = FALSE,
+              smoothFactor = 0,
+              fillOpacity = 0.7,
+              color = ~ pal_house(median_house)) %>%
+  addLegend("bottomright", 
+            pal = pal_house, 
+            values = ~ median_house,
+            title = "Median Housing Cost",
+            labFormat = labelFormat(prefix = "$"),
+            opacity = 1) %>% 
+  addAwesomeMarkers(data = alameda, 
+                    ~longitude, 
+                    ~latitude, 
+                    icon = icons,
+                    popup= ~school_name) %>% 
+  addLegend("topright", 
+            colors = rev(c("#4EA1E1", "fff", "#F27B7B", "#D53B3B", "#9C0E0E")),
+            labels = rev(c("< -0.3",
+                       "-0.3 to 0.3", 
+                       "0.3 to 0.9", 
+                       "0.9 to 1.5", 
+                       "> 1.5")),
+            title = "Achievement gap effect size (V)",
+            opacity = 0.8)
+
+alameda_geo %>%
+  st_transform(crs = "+init=epsg:4326") %>%
+  leaflet() %>%
+  addProviderTiles(provider = "CartoDB.Positron") %>%
+  addPolygons(popup = ~ str_extract(NAME, "^([^,]*)"),
+              stroke = FALSE,
+              smoothFactor = 0,
+              fillOpacity = 0.7,
+              color = ~ pal_black(n_black)) %>%
+  addLegend("bottomright", 
+            pal = pal_black, 
+            values = ~ n_black,
+            title = "N Identify Black",
+            opacity = 1) %>% 
+  addAwesomeMarkers(data = alameda, 
+                    ~longitude, 
+                    ~latitude, 
+                    icon = icons,
+                    popup= ~school_name) %>% 
+  addLegend("topright", 
+            colors = rev(c("#4EA1E1", "fff", "#F27B7B", "#D53B3B", "#9C0E0E")),
+            labels = rev(c("< -0.3",
+                       "-0.3 to 0.3", 
+                       "0.3 to 0.9", 
+                       "0.9 to 1.5", 
+                       "> 1.5")),
+            title = "Achievement gap effect size (V)",
+            opacity = 0.8)
+
+alameda_geo %>%
+  st_transform(crs = "+init=epsg:4326") %>%
+  leaflet() %>%
+  addProviderTiles(provider = "CartoDB.Positron") %>%
+  addPolygons(popup = ~ str_extract(NAME, "^([^,]*)"),
+              stroke = FALSE,
+              smoothFactor = 0,
+              fillOpacity = 0.7,
+              color = ~ pal_pov(n_poverty)) %>%
+  addLegend("bottomright", 
+            pal = pal_pov, 
+            values = ~ n_poverty,
+            title = "N Ratio > 2.0; Income to Poverty",
+            opacity = 1) %>% 
+  addAwesomeMarkers(data = alameda, 
+                    ~longitude, 
+                    ~latitude, 
+                    icon = icons,
+                    popup= ~school_name) %>% 
+  addLegend("topright", 
+            colors = rev(c("#4EA1E1", "fff", "#F27B7B", "#D53B3B", "#9C0E0E")),
+            labels = rev(c("< -0.3",
+                       "-0.3 to 0.3", 
+                       "0.3 to 0.9", 
+                       "0.9 to 1.5", 
+                       "> 1.5")),
+            title = "Achievement gap effect size (V)",
+            opacity = 0.8)
+```
+
+Following the estimation of all achievement gaps within each state, we restricted the analyses to Alameda County in California, and Multnomah County in Oregon. Maps were then produced to examine any geographical clustering of school-level achievement gap estimates, as well as features of the surrounding area that may correspond with this clustering. 
+
+While maps were produce for both counties, we report here only on Alameda County. Readers interested in the Oregon results can find similar screen captures in the GitHub repository from the link noted previously (in the footnote). 
+
+Figures 4, 5, and 6 displays screen captures of an interactive map of Alameda county, with census tracts colored according to the median housing cost,  number of individuals within the tract identifying as Black, and the number of individuals in the tract with an income to poverty ratio above 2.0, respectively. Note that in addition to providing information about the surrounding area, census tracts also help describe population density, with smaller polygons representing high population density (i.e., more people per square mile). Schools are displayed by "pins", which are colored according to the estimated achievement gap at the school (darker red = larger achievement gap). For the actual maps, patterns can be explored more readily by utilizing zoom and panning features. Additionally, the name of any individual school can be identified by clicking on the pin. In the screen capture, it is somewhat difficult to discern some of the census tracts, particularly the smaller tracts (high population density) which tend to correspond with many overlapping schools. However, the clustering of schools corresponding to the estimated achievement gap is still readily apparent. The Northwest section of the map includes a clear cluster of schools with large achievement gaps, with students identifying as Black in these schools performing, on average, more than 1.5 standard deviations below their White peers. The more central portion of the map includes mostly schools with relatively small achievement gaps, colored pink ($V_d =$ -0.3 to -0.9) or white ($V_d =$ -0.3 to 0.3), although even within this cluster there are a few schools with very large achievement gaps. 
+
+In terms of using the surrounding demographics of the area to predict school-level achievement gaps, there are no clearly discernible patterns among any of the maps displayed. Figure 6, displaying the number of income to poverty ratios above 2.0, has the most variability and there does appear to be a modest relation there. In particular, the cluster of schools with high estimated achievement gaps in the Northwest are generally in areas with fewer individuals with an income to poverty ratio over 2.0.
+
+![Alameda County School-Level Achievement Gaps and Median Housing Cost](anderson_ncme18_files/screen_caps/median_house.png)
+
+![Alameda County School-Level Achievement Gaps and Number of Individuals Identifying as Black](anderson_ncme18_files/screen_caps/n_black.png)
+
+![Alameda County School-Level Achievement Gaps and Median Housing Cost](anderson_ncme18_files/screen_caps/poverty.png)
+
+# Discussion
+Education has somewhat of a unique challenge when it comes to making data open and accessible, given individuals of a protected class (minors) are included in the vast majority of cases. Aggregating data helps make these data publicly available and more easy to share, but comes with challenges in reducing the overall utility of data for research purposes. This paper illustrated one method of using publicly available data, which have been reported by all states on a mandatory basis since the implementation of NCLB, to address a substantively meaningful question: How do achievement gaps vary between schools? Overall, the method used to estimate achievement gaps appeared to work well, in terms of the extent to which achievement gap estimates from a full dataset with individual student-level records were recovered when using coarsened data. Further, we were able to combine these effect size estimates with geo-spatial and census data to evaluate the extent to which school-level achievement gaps related to the demographics of the surrounding area.
+
+In this study, the largest gains to evaluating achievement gaps via mapping was the clear cluster of schools found with large achievement gaps. Without looking at the data geo-spatially, or being intimately familiar with the set of schools, we likely would have observed the schools as all having large achievement gaps, but missed that they were nearly all clustered in the same geographical area. The census data did not, in this case, appear to explain much of the underlying mechanisms behind this clustering. However, it is important to note that clear patterns have been found in prior investigations of school variability using census data, using different school-level outcomes [see @anderson17a]. Deeper investigations into the census data may find trends that were not apparent here. 
+
+## Limitation and Directions for Future Research
+In this study, we evaluated effect sizes with empirical data. Although this is helpful in determining how a statistic behaves in applied use, it is also a limitation in that "truth" was not known. That is, while Cohen's $D$ and $V_c$ were moderately different, with $V_c$ being marginally lower on average, we cannot state which is more "correct". It is also important to note, however, that any measure of effect size is a summary statistic, summarizing the difference between two distributions. Important differences at specific points in the distribution may therefore be missed by these summary measures. For example, it is possible for large achievement gaps to be apparent at one point in the distribution, and not others, including the directionality of the effect even reversing [see @anderson17b; @esvis; @stevens17]. Despite using empirical data, however, we were able to know "truth" relative to the extent that $V_d$ recovered the estimate from $V_c$. 
+
+This research also only preliminarily examined the ACS data, but the ACS, and the census bureau generally, has a wealth of data that have generally been underutilized in educational research. This manuscript investigated three of potentially thousands of variables that could account for variability among schools not only in achievement gaps, but a host of other outcomes (e.g., graduation rates). A logical extension of this work would be to include data on criminal activity in the area, given the results of @bowen99 and others [e.g., @mccoy13] indicating that neighborhood danger relates to school-wide outcomes. These data are not available as part of the ACS, which is the most up-to-date census dataset, but are available through other US Census Bureau datasets. 
+
+## Conclusions
+The approach to estimating school-level achievement gaps illustrated here can lead to potentially rich datasets that can be shared publicly without concerns of jeopardizing student privacy, given that summary-level data are used to produce the estimates. In this study, we were to estimate achievement gaps for every school in both California a Oregon. Future research could use these estimates for further research. For example, it would be interesting to actually model the spatial features, rather than just explore them visually, which could be done by estimating a multilevel model with census tract entered as a random effect. The variability in school-level achievement gaps lying between census tracts could then be estimated, and census variables could be used to account for this variability. An incredible array of questions could  be addressed within this framework, while only using publicly available data.
 
 \newpage
 # References

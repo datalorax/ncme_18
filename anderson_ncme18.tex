@@ -334,7 +334,29 @@ effect sizes for schools in California and Oregon, combining these data
 with census data, and producing geo-spatial maps to evaluate both the
 clustering of school-level estimates of achievement gaps, and the extent
 to which any clustering relates to the demographics of the surrounding
-area (e.g., median housing cost).
+area (e.g., median housing cost). The following five research questions
+were addressed:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  To what extent does \(V\) correspond with \(D\), when estimated from
+  the full and coarsened data?
+\item
+  To what extent does \(V\) correspond with itself, when estimated from
+  the full and coarsened data?
+\item
+  What does the distribution of school-level achievement gaps look like
+  (shape and variance) in California and Oregon?
+\item
+  Do school-level achievement gap estimates tend to be geographically
+  clustered?
+\item
+  If school-level achievement gaps are geographically clustered, does
+  this clustering relate to demographic characteristics of the
+  surrounding area?
+\end{enumerate}
 
 \hypertarget{method}{%
 \section{Method}\label{method}}
@@ -391,13 +413,13 @@ Mathematics & Hispanic & 91967 & 217.60 & 19.61\\
 Mathematics & Multiethnic & 19646 & 222.63 & 20.39\\
 Mathematics & Pac Islander & 2760 & 218.01 & 19.99\\
 Mathematics & White & 234136 & 223.74 & 19.64\\
-Reading/Language Arts & Am. Indian & 6006 & 217.47 & 21.47\\
-Reading/Language Arts & Asian & 13941 & 225.01 & 19.27\\
-Reading/Language Arts & Black & 9237 & 216.00 & 21.07\\
-Reading/Language Arts & Hispanic & 89071 & 216.40 & 19.44\\
-Reading/Language Arts & Multiethnic & 18649 & 222.51 & 19.68\\
-Reading/Language Arts & Pac Islander & 2706 & 217.23 & 19.35\\
-Reading/Language Arts & White & 220974 & 223.48 & 19.26\\
+Rdg/Language Arts & Am. Indian & 6006 & 217.47 & 21.47\\
+Rdg/Language Arts & Asian & 13941 & 225.01 & 19.27\\
+Rdg/Language Arts & Black & 9237 & 216.00 & 21.07\\
+Rdg/Language Arts & Hispanic & 89071 & 216.40 & 19.44\\
+Rdg/Language Arts & Multiethnic & 18649 & 222.51 & 19.68\\
+Rdg/Language Arts & Pac Islander & 2706 & 217.23 & 19.35\\
+Rdg/Language Arts & White & 220974 & 223.48 & 19.26\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
@@ -499,10 +521,244 @@ with continuous data}
 
 Figure 1 displays the relation between \(V_c\) and \(D\) both in terms
 of the bivariate relation and the distribution of differences with
-respect to \(V\). The vertical line on the histogram indicates the mean
-of the differences. Note that it was slightly negative (\(M =\) -0.12),
-indicating that, on average for this sample, \(V\) represented a
-slightly lower estimate of the effect size.
+respect to \(V\) for both Mathematics and Reading/Language Arts. For the
+bivariate relation, the x-axis was restricted to span -2 to 1.5, which
+resulted in the removal of one outlier point (which had little effect on
+the overall trend, but nonetheless made the bulk of the data more
+difficult to see). Topographical lines are displayed on top of the
+points to help display the density of the data, given that many points
+overlapped. The majority of the estimates were negative, as measured by
+either \(V_c\) or \(D\), indicating that students identifying as
+Hispanic/Latino performed, on average, lower than students identifying
+as White in most schools across Oregon. Note that there were a few
+schools, however, for both Mathematics and Reading/Language Arts, where
+the achievement gap was reversed (i.e., students identifying as White
+scored, on average, lower than students identifying as Hispanic/Latino).
+Overall, \(V_c\) and \(D\) correlated at 0.87 for mathematics and 0.86
+for Reading/Language Arts.For the histograms, the vertical line
+represents the mean of the differences for the corresponding content
+area. Note that the mean for each content area was slightly negative
+(\(M_{mth} =\) -0.12, \(M_{rdg} =\) -0.16), indicating that, on average
+for this sample, \(V_c\) represented a slightly lower estimate of the
+effect size (less positive/more negative) relative to \(D\). The
+distributions had a standard deviation of 0.15 and 0.16 for mathematics
+and reading/language arts respectively.
+
+\begin{figure}
+\centering
+\includegraphics{anderson_ncme18_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{\label{fig:unnamed-chunk-2}Differences in V estimated from
+coarsened data, and V and Cohen's D estimated from continuous data}
+\end{figure}
+
+Figure 2 displays the bivariate relation and differences between \(V_d\)
+estimated with discrete (coarsened) data, and Cohen's \(D\) and \(V_c\)
+estimated with the full data. As would be expected, the relation between
+\(V_d\) and \(D\) was less strong than the relation between \(V_c\) and
+\(D\). However, the overall relation was still quite strong, correlating
+at 0.73 and 0.72 for mathematics and reading/language arts,
+respectively. The standard deviations of the differences were also
+marginally more broad, at 0.21 and 0.23, respectively. The coarsening of
+the data did also lead to some differences in the estimated effect
+between \(V_c\) and \(V_d\). The correlations were similar in magnitude
+to \(V_c\) and \(D\), correlating at 0.83 and 0.89 for mathematics and
+reading/language arts, respectively. The distribution of differences
+centered on 0.02 and 0.03 for mathematics and reading/language arts,
+respectively, implying that, on average, there was very little
+difference between \(V\) calculated with the continuous data (\(V_c\))
+and \(V\) calculated with the discrete data (\(V_d\)). The standard
+deviations of these distributions were 0.17 and 0.23.
+
+\hypertarget{school-level-achievement-gaps}{%
+\subsection{School-Level Achievement
+Gaps}\label{school-level-achievement-gaps}}
+
+\begin{figure}
+\centering
+\includegraphics{anderson_ncme18_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{\label{fig:unnamed-chunk-3}Distribution of Achievement Gap Effect
+Sizes in Oregon and California}
+\end{figure}
+
+\hypertarget{overall-estimates-by-state}{%
+\subsubsection{Overall Estimates by
+State}\label{overall-estimates-by-state}}
+
+Using publicly available data, we calculated the Black-White achievement
+gap for all schools meeting minimum reporting criteria for both groups
+of students in California, and the Hispanic/Latino achievement gap for
+all schools meeting minimum reporting criteria for both groups in
+Oregon. For both states, we limited the analysis to only mathematics.
+Figure 3 displays the distribution of effects for each state, with the
+mean displayed by the blue vertical line. Schools with an estimated
+effect above zero represent schools in which the average achievement of
+White students was below the corresponding focal group. This portion of
+each corresponding distribution is displayed by a dark gray color and,
+as can be seen, represented very few schools relative to the toal
+distribution in both cases. The overall mean Hispanic/Latino - White
+achievement gap in Oregon was -0.41 with a standard deviation of 0.29.
+In California, the average Black-White achievement gap was estimated at
+-0.54 with a standard deviation of 0.34. When interpreting these
+numbers, it is important to keep in mind that these represent the mean
+and variance of school-level achievement gaps. In other words, the
+overall achievement gap for each state may be marginally different,
+given that these estimates represent the mean of group means (which are
+unbalanced).
+
+\hypertarget{mapping-the-estimates}{%
+\subsubsection{Mapping the Estimates}\label{mapping-the-estimates}}
+
+Following the estimation of all achievement gaps within each state, we
+restricted the analyses to Alameda County in California, and Multnomah
+County in Oregon. Maps were then produced to examine any geographical
+clustering of school-level achievement gap estimates, as well as
+features of the surrounding area that may correspond with this
+clustering.
+
+While maps were produce for both counties, we report here only on
+Alameda County. Readers interested in the Oregon results can find
+similar screen captures in the GitHub repository from the link noted
+previously (in the footnote).
+
+Figures 4, 5, and 6 displays screen captures of an interactive map of
+Alameda county, with census tracts colored according to the median
+housing cost, number of individuals within the tract identifying as
+Black, and the number of individuals in the tract with an income to
+poverty ratio above 2.0, respectively. Note that in addition to
+providing information about the surrounding area, census tracts also
+help describe population density, with smaller polygons representing
+high population density (i.e., more people per square mile). Schools are
+displayed by \enquote{pins}, which are colored according to the
+estimated achievement gap at the school (darker red = larger achievement
+gap). For the actual maps, patterns can be explored more readily by
+utilizing zoom and panning features. Additionally, the name of any
+individual school can be identified by clicking on the pin. In the
+screen capture, it is somewhat difficult to discern some of the census
+tracts, particularly the smaller tracts (high population density) which
+tend to correspond with many overlapping schools. However, the
+clustering of schools corresponding to the estimated achievement gap is
+still readily apparent. The Northwest section of the map includes a
+clear cluster of schools with large achievement gaps, with students
+identifying as Black in these schools performing, on average, more than
+1.5 standard deviations below their White peers. The more central
+portion of the map includes mostly schools with relatively small
+achievement gaps, colored pink (\(V_d =\) -0.3 to -0.9) or white
+(\(V_d =\) -0.3 to 0.3), although even within this cluster there are a
+few schools with very large achievement gaps.
+
+In terms of using the surrounding demographics of the area to predict
+school-level achievement gaps, there are no clearly discernible patterns
+among any of the maps displayed. Figure 6, displaying the number of
+income to poverty ratios above 2.0, has the most variability and there
+does appear to be a modest relation there. In particular, the cluster of
+schools with high estimated achievement gaps in the Northwest are
+generally in areas with fewer individuals with an income to poverty
+ratio over 2.0.
+
+\begin{figure}
+\centering
+\includegraphics{anderson_ncme18_files/screen_caps/median_house.png}
+\caption{Alameda County School-Level Achievement Gaps and Median Housing
+Cost}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{anderson_ncme18_files/screen_caps/n_black.png}
+\caption{Alameda County School-Level Achievement Gaps and Number of
+Individuals Identifying as Black}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{anderson_ncme18_files/screen_caps/poverty.png}
+\caption{Alameda County School-Level Achievement Gaps and Median Housing
+Cost}
+\end{figure}
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+Education has somewhat of a unique challenge when it comes to making
+data open and accessible, given individuals of a protected class
+(minors) are included in the vast majority of cases. Aggregating data
+helps make these data publicly available and more easy to share, but
+comes with challenges in reducing the overall utility of data for
+research purposes. This paper illustrated one method of using publicly
+available data, which have been reported by all states on a mandatory
+basis since the implementation of NCLB, to address a substantively
+meaningful question: How do achievement gaps vary between schools?
+Overall, the method used to estimate achievement gaps appeared to work
+well, in terms of the extent to which achievement gap estimates from a
+full dataset with individual student-level records were recovered when
+using coarsened data. Further, we were able to combine these effect size
+estimates with geo-spatial and census data to evaluate the extent to
+which school-level achievement gaps related to the demographics of the
+surrounding area.
+
+In this study, the largest gains to evaluating achievement gaps via
+mapping was the clear cluster of schools found with large achievement
+gaps. Without looking at the data geo-spatially, or being intimately
+familiar with the set of schools, we likely would have observed the
+schools as all having large achievement gaps, but missed that they were
+nearly all clustered in the same geographical area. The census data did
+not, in this case, appear to explain much of the underlying mechanisms
+behind this clustering. However, it is important to note that clear
+patterns have been found in prior investigations of school variability
+using census data, using different school-level outcomes (see Anderson,
+2017). Deeper investigations into the census data may find trends that
+were not apparent here.
+
+\hypertarget{limitation-and-directions-for-future-research}{%
+\subsection{Limitation and Directions for Future
+Research}\label{limitation-and-directions-for-future-research}}
+
+In this study, we evaluated effect sizes with empirical data. Although
+this is helpful in determining how a statistic behaves in applied use,
+it is also a limitation in that \enquote{truth} was not known. That is,
+while Cohen's \(D\) and \(V_c\) were moderately different, with \(V_c\)
+being marginally lower on average, we cannot state which is more
+\enquote{correct}. It is also important to note, however, that any
+measure of effect size is a summary statistic, summarizing the
+difference between two distributions. Important differences at specific
+points in the distribution may therefore be missed by these summary
+measures. For example, it is possible for large achievement gaps to be
+apparent at one point in the distribution, and not others, including the
+directionality of the effect even reversing (Anderson, 2018; see Daniel,
+Stevens, \& Nese, 2017; Stevens, Daniel, Nese, \& Tindal, 2017). Despite
+using empirical data, however, we were able to know \enquote{truth}
+relative to the extent that \(V_d\) recovered the estimate from \(V_c\).
+
+This research also only preliminarily examined the ACS data, but the
+ACS, and the census bureau generally, has a wealth of data that have
+generally been underutilized in educational research. This manuscript
+investigated three of potentially thousands of variables that could
+account for variability among schools not only in achievement gaps, but
+a host of other outcomes (e.g., graduation rates). A logical extension
+of this work would be to include data on criminal activity in the area,
+given the results of N. K. Bowen and Bowen (1999) and others (e.g.,
+McCoy et al., 2013) indicating that neighborhood danger relates to
+school-wide outcomes. These data are not available as part of the ACS,
+which is the most up-to-date census dataset, but are available through
+other US Census Bureau datasets.
+
+\hypertarget{conclusions}{%
+\subsection{Conclusions}\label{conclusions}}
+
+The approach to estimating school-level achievement gaps illustrated
+here can lead to potentially rich datasets that can be shared publicly
+without concerns of jeopardizing student privacy, given that
+summary-level data are used to produce the estimates. In this study, we
+were to estimate achievement gaps for every school in both California a
+Oregon. Future research could use these estimates for further research.
+For example, it would be interesting to actually model the spatial
+features, rather than just explore them visually, which could be done by
+estimating a multilevel model with census tract entered as a random
+effect. The variability in school-level achievement gaps lying between
+census tracts could then be estimated, and census variables could be
+used to account for this variability. An incredible array of questions
+could be addressed within this framework, while only using publicly
+available data.
 
 \newpage
 
@@ -512,6 +768,11 @@ slightly lower estimate of the effect size.
 \begingroup\setlength{\parindent}{-0.5in}\setlength{\leftskip}{0.25in}
 
 \hypertarget{refs}{}
+\leavevmode\hypertarget{ref-anderson17a}{}%
+Anderson, D. (2017, November). \emph{Mapping statewide school ratings
+with us census tracts}. Retrieved March 24, 2018, from
+\url{http://www.dandersondata.com/post/mapping-statewide-school-ratings-with-us-census-tracts/}
+
 \leavevmode\hypertarget{ref-esvis}{}%
 Anderson, D. (2018). \emph{Esvis: Visualization and estimation of effect
 sizes}. Retrieved from \url{https://github.com/DJAnderson07/esvis}
@@ -537,6 +798,11 @@ districts files}. Retrieved March 24, 2018, from
 Cheng, J., Karambelkar, B., \& Xie, Y. (2017). \emph{Leaflet: Create
 interactive web maps with the javascript 'leaflet' library}. Retrieved
 from \url{https://CRAN.R-project.org/package=leaflet}
+
+\leavevmode\hypertarget{ref-anderson17b}{}%
+Daniel, A., Stevens, J. J., \& Nese, F. T., J. (2017). \emph{Visualizing
+achievement gaps across the full distribution}. Retrieved from
+\url{https://djanderson07.github.io/ncme_2017/}
 
 \leavevmode\hypertarget{ref-dawes16}{}%
 Dawes, S. S., Vidiasova, L., \& Parkhimovich, O. (2016). Planning and
@@ -642,6 +908,12 @@ Information Quarterly}, \emph{32}(3), 308--315.
 Sirin, S. R. (2005). Socioeconomic status and academic achievement: A
 meta-analytic review of research. \emph{Review of Educational Research},
 \emph{75}(3), 417--453.
+
+\leavevmode\hypertarget{ref-stevens17}{}%
+Stevens, J. J., Daniel, A., Nese, F. T., J, \& Tindal, G. (2017).
+\emph{Using effect size measures to estimate and report achievement
+gaps}. Retrieved from
+\url{http://www.ncaase.com/docs/Stevens_et_al_NCME_2017-1.pdf}
 
 \leavevmode\hypertarget{ref-acs}{}%
 United States Census Bureau. (2016). \emph{American community survey}.
