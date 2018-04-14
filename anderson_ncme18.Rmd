@@ -55,13 +55,13 @@ theme_update(plot.title = element_text(hjust = 0.5))
 options(datatable.showProgress = FALSE,
         tigris_use_cache = TRUE)
 
-opts_chunk$set(echo        = FALSE,
-               message     = FALSE,
-               warning     = FALSE,
-               results     = "asis",
-               cache       = TRUE,
-               ca.comments = FALSE,
-               autodep     = TRUE)
+opts_chunk$set(echo           = FALSE,
+               message        = FALSE,
+               warning        = FALSE,
+               results        = "asis",
+               cache          = TRUE,
+               cache.comments = FALSE,
+               autodep        = TRUE)
 dep_auto()
 ```
 
@@ -74,7 +74,7 @@ Aggregating the data to higher levels, combined with reporting test score data b
 
 Ideally, a transformation could be applied to the "coarsened" data [i.e., continuous test score distributions binned into a set of ordinal categories; @reardon15] to recover the parameters of the full distribution for each subgroup, making the placement of the cut scores inconsequential to evaluating subgroup differences. @ho12 and @reardon15 propose such an approach, in which the coarsened data are used to construct empirical cumulative distribution functions (ECDFs) for each group. Paired ECDFs for any two groups are then evaluated in the form of a probability-probability (PP) plot, and the area under the PP curve (AUC) provides an estimate of the probability that a randomly selected students from the reference distribution (plotted along the x-axis) would score higher than a randomly selected student from the focal distribution [plotted along the y-axis; see @ho12]. This proportion can then be transformed into standard-deviation units, using the following formula, as outlined by @ho09
 \begin{equation}
-V = \sqrt(2)\Phi^{-1}(AUC)
+V = \sqrt{2}\Phi^{-1}(AUC)
 \end{equation}
 Where $\Phi^{-1}$ represents the inverse normal distribution. Under the assumption of respective normality, $V$ is equivalent to Cohen's $d$, and the dependence upon cut scores is removed, given that it is an estimate of the difference between the paired distributions, rather than the difference between proportions at any particular point on the distribution. Importantly, because $V$ can be estimated from coarsened data, it can be used to estimate the overall achievement gap between student subgroups using data that are mandatorily reported as part of NCLB.
 
@@ -542,6 +542,9 @@ icons <- awesomeIcons(
   markerColor = pal_col(alameda)
 )
 
+library(htmlwidgets)
+library(htmltools)
+
 alameda_geo %>%
   st_transform(crs = "+init=epsg:4326") %>%
   leaflet() %>%
@@ -570,7 +573,8 @@ alameda_geo %>%
                        "0.9 to 1.5", 
                        "> 1.5")),
             title = "Achievement gap effect size (V)",
-            opacity = 0.8)
+            opacity = 0.8) %>% 
+  saveWidget("alameda_housing.html")
 
 alameda_geo %>%
   st_transform(crs = "+init=epsg:4326") %>%
@@ -599,7 +603,8 @@ alameda_geo %>%
                        "0.9 to 1.5", 
                        "> 1.5")),
             title = "Achievement gap effect size (V)",
-            opacity = 0.8)
+            opacity = 0.8) %>% 
+  saveWidget("alameda_black.html")
 
 alameda_geo %>%
   st_transform(crs = "+init=epsg:4326") %>%
@@ -628,7 +633,8 @@ alameda_geo %>%
                        "0.9 to 1.5", 
                        "> 1.5")),
             title = "Achievement gap effect size (V)",
-            opacity = 0.8)
+            opacity = 0.8) %>% 
+  saveWidget("alameda_poverty.html")
 ```
 
 Following the estimation of all achievement gaps within each state, we restricted the analyses to Alameda County in California[^3]. Maps were then produced to examine any geographical clustering of school-level achievement gap estimates, as well as features of the surrounding area that may correspond with this clustering. Figures 4, 5, and 6 displays screen captures of an interactive map, with census tracts colored according to the median housing cost,  number of individuals within the tract identifying as Black, and the number of individuals in the tract with an income to poverty line ratio above 2.0, respectively. Note that in addition to providing information about the surrounding area, census tracts also help describe population density, with smaller polygons representing high population density (i.e., more people per square mile). Schools (pins on the map) colored darker red represent larger estimated achievement gaps. In the screen capture, it is somewhat difficult to discern some of the census tracts, particularly smaller tracts (high population density), which tend to correspond with many overlapping schools. However, the clustering of schools corresponding to the estimated achievement gap is still readily apparent. The Northwest section of the map includes a clear cluster of schools with large achievement gaps, with students identifying as Black in these schools performing, on average, more than 1.5 standard deviations below their White peers. The more central portion of the map includes mostly schools with relatively moderate achievement gaps, colored pink ($V_d =$ -0.3 to -0.9), or essentially no achievement gap, colored white ($V_d =$ -0.3 to 0.3). However, even within this cluster of schools with more moderate achievement gaps, there are a few schools with very large achievement gaps. 
